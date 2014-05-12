@@ -29,6 +29,24 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 */
-	echo "Oh yes, it worked so far.";
+$response = wp_remote_post("http://localhost:8080/enhancer/", array(
+	'httpversion' => '1.1',
+	'headers' => array(
+		//'Accept' => 'application/rdf+json',
+		'Accept' => 'text/turtle',
+		'Content-Type' => 'application/x-www-form-urlencoded',
+	),
+	'body' => array(
+		'content' => 'The Stanbol enhancer can detect famous cities such as Paris and people such as Bob Marley.'
+	),
+));
+if ( is_wp_error( $response ) ) {
+	$error_message = $response->get_error_message();
+	echo "Something went wrong: $error_message";
+} else {
+	echo 'Response:<pre>';
+	print_r( esc_html( $response['body'] ) );
+	echo '</pre>';
+}
 ?>
 
