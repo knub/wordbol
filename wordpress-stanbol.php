@@ -30,12 +30,18 @@
     THE SOFTWARE.
 */
 
-require "config.php";
-require "vendor/autoload.php";
-require "src/WordPressStanbol/StanbolEnhancer.php";
+error_reporting(E_ALL);
+require_once 'config.php';
+require 'vendor/autoload.php';
+require 'src/WordPressStanbol/StanbolEnhancer.php';
+require 'src/WordPressStanbol/Models/EnhancementResult.php';
+require 'src/WordPressStanbol/Models/Enhancement.php';
+require 'src/WordPressStanbol/Models/LanguageEnhancement.php';
 
-$enhancer = new StanbolEnhancer();
-$enhancer->enhance('The Stanbol enhancer can detect famous cities such as Paris and people such as Bob Marley.');
+$enhancer = new WordPressStanbol\StanbolEnhancer();
+echo '<br /><br /><br /><pre>';
+var_dump($enhancer->enhance('The Stanbol enhancer can detect famous cities such as Paris and people such as Bob Marley. In Deutschland denkt man aber anders. Deutschland.'));
+echo '</pre>';
 
 //$response = wp_remote_post("http://localhost:8080/enhancer/", array(
 //	'httpversion' => '1.1',

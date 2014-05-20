@@ -9,17 +9,20 @@ namespace WordPressStanbol\Models;
 class Enhancement {
 	private $confidence;
 
+	function __construct($confidence) {
+		$this->set_confidence($confidence);
+	}
 	/**
 	 * @return double The confidence for this enhancement as a double, as returned by stanbol.
 	 */
-	public function getConfidence() {
+	public function get_confidence() {
 		return $this->confidence;
 	}
 
 	/**
 	 * @param $confidence double The confidence for this enhancement.
 	 */
-	public function setConfidence($confidence) {
+	public function set_confidence($confidence) {
 		$this->confidence = $confidence;
 	}
 }

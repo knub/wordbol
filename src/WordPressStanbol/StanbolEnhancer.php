@@ -1,14 +1,31 @@
 <?php
 
-//namespace WordPressStanbol;
+namespace WordPressStanbol;
+
+use EasyRdf_Graph;
+use WordPressStanbol\Models\EnhancementResult;
+use WordPressStanbol\Models\LanguageEnhancement;
 
 class StanbolEnhancer {
 
 	function enhance($text) {
 		$raw_enhancement = $this::request_enhancement($text);
-		return $raw_enhancement;
+		$enhancement_result = $this->build_enhancement_result($raw_enhancement);
+		return $enhancement_result;
     }
 
+	private function build_enhancement_result($graph) {
+		$enhancement_result = new EnhancementResult();
+		$text_annotations = $graph->allOfType('http://fise.iks-project.eu/ontology/TextAnnotation');
+		array_walk($text_annotations, function($annotation) use ($enhancement_result) {
+			if (!$annotation->hasProperty('http://purl.org/dc/terms/language'))
+				return;
+			$language = $annotation->getLiteral('<http://purl.org/dc/terms/language>')->getValue();
+			$confidence = floatval($annotation->getLiteral('<http://fise.iks-project.eu/ontology/confidence>')->getValue());
+			$enhancement_result->add_language(new LanguageEnhancement($language, $confidence));
+		});
+		return $enhancement_result;
+	}
 	private function request_enhancement($text) {
 		$parameters = $this::build_remote_post_parameters();
 		$parameters['body'] = array('content' => $text);
@@ -24,19 +41,6 @@ class StanbolEnhancer {
 		} else {
 			$graph = new EasyRdf_Graph();
 			$graph->parse($response['body'], 'turtle');
-			$resources = $graph->allOfType('http://fise.iks-project.eu/ontology/TextAnnotation');
-			echo '<br /><br /><br /><br /><br /><ul>';
-			echo '<pre>';
-//			print_r($resources);
-//			print_r($resources[2]->properties());
-//			var_dump($resources[2]->getResource($resources[2]->properties()[0])->getUri());
-			var_dump($resources[2]->getResource("rdf:type")->getUri());
-//			var_dump($resources[2]->get('<http://fise.iks-project.eu/ontology/confidence>'));
-//			var_dump($resources[0]->dump());
-//			var_dump($resources[2]->get('http://purl.org/dc/terms/language'));
-//			var_dump($resources[2]->get('http://purl.org/dc/terms/type'));
-			echo '</pre>';
-			echo '</ul>';
 			return $graph;
 		}
 	}
