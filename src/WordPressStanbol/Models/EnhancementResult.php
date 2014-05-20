@@ -2,6 +2,14 @@
 
 namespace WordPressStanbol\Models;
 
+function compare_confidences($e1, $e2) {
+	$v = $e2->get_confidence() - $e1->get_confidence();
+	if ($v < 0)
+		return -1;
+	else if ($v > 0)
+		return +1;
+	return 0;
+}
 class TextAnnotationStorage extends \SplObjectStorage {
 	public function getHash($text_annotation) {
 		return $text_annotation->get_name();
@@ -21,14 +29,7 @@ class EnhancementResult {
 	 */
 	public function add_language($language_enhancement) {
 		array_push($this->languages, $language_enhancement);
-		usort($this->languages, function($le1, $le2) {
-			$v = $le2->get_confidence() - $le1->get_confidence();
-			if ($v < 0)
-				return -1;
-			else if ($v > 0)
-				return +1;
-			return 0;
-		});
+		usort($this->languages, array($this, 'compare_confidences'));
 	}
 
 	public function add_text_annotation($annotation) {
@@ -37,7 +38,23 @@ class EnhancementResult {
 		$this->entity_annotations[$annotation] = array();
 	}
 
-	public function add_entity_annotation($annotation) {
-
+	public function add_entity_annotation_for($text_annotation_resource, $entity_annotation) {
+		$text_annotation = new TextAnnotation($text_annotation_resource);
+		if (!$this->entity_annotations->contains($text_annotation))
+			throw new \Exception('Given TextAnnotation is unkown.');
+		$entity_annotations = $this->entity_annotations[$text_annotation];
+		array_push($entity_annotations, $entity_annotation);
+		usort($entity_annotations, array($this, 'compare_confidences'));
+		$this->entity_annotations[$text_annotation] = $entity_annotations;
 	}
+
+	public function compare_confidences($e1, $e2) {
+		$v = $e2->get_confidence() - $e1->get_confidence();
+		if ($v < 0)
+			return -1;
+		else if ($v > 0)
+			return +1;
+		return 0;
+	}
+
 }

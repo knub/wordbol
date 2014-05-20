@@ -7,7 +7,8 @@ class EntityAnnotationEnhancement extends Enhancement {
 
 	private $resource;
 
-	function __construct($resource) {
+	function __construct($resource, $confidence) {
+		parent::__construct($confidence);
 		$this->resource = $resource;
 	}
 

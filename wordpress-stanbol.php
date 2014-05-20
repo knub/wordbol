@@ -38,6 +38,7 @@ require 'src/WordPressStanbol/Models/EnhancementResult.php';
 require 'src/WordPressStanbol/Models/TextAnnotation.php';
 require 'src/WordPressStanbol/Models/Enhancement.php';
 require 'src/WordPressStanbol/Models/LanguageEnhancement.php';
+require 'src/WordPressStanbol/Models/EntityAnnotationEnhancement.php';
 
 $enhancer = new WordPressStanbol\StanbolEnhancer();
 echo '<br /><br /><br /><pre>';

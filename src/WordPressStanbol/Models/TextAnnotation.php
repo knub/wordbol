@@ -16,12 +16,13 @@ class TextAnnotation {
 	 * @param $end int The end of the text annotation.
 	 * @param $text string The text of the annotatoin.
 	 */
-	function __construct($name, $start, $end, $text) {
+	function __construct($name, $start = null, $end = null, $text = null) {
 		$this->name = $name;
 		$this->start = $start;
 		$this->end   = $end;
 		$this->text  = $text;
 	}
+
 
 	/**
 	 * @return string The name of the resource, e.g. 'urn:enhancement-0df2ab8a-07d2-0da6-31e6-6a02857af3ca'
