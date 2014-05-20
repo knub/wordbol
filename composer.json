@@ -1,15 +1,19 @@
 {
-    "name": "knub/wordpress-stanbol",
-    "description": "A stanbol plugin for Stanbol.",
-    "require": {
-        "easyrdf/easyrdf": "0.8.0"
-    },
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Stefan Bunk",
-            "email": "stefan.bunk@googlemail.com"
-        }
-    ],
-    "minimum-stability": "stable"
+	"name": "knub/wordpress-stanbol",
+	"type": "wordpress-plugin",
+	"description": "A stanbol plugin for Stanbol.",
+	"require": {
+		"easyrdf/easyrdf": "0.8.0"
+	},
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Stefan Bunk",
+			"email": "stefan.bunk@googlemail.com"
+		}
+	],
+//	"psr-4": {
+//		"WordPressStanbol\\": "src/"
+//	},
+	"minimum-stability": "stable"
 }
