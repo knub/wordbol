@@ -12,7 +12,7 @@ class LanguageEnhancement extends Enhancement {
 
 	function __construct($language, $confidence) {
 		parent::__construct($confidence);
-		$this->set_language($language);
+		$this->language = $language;
 	}
 
 	/**
@@ -22,12 +22,4 @@ class LanguageEnhancement extends Enhancement {
 		$this->get_language();
 		return $this->language;
 	}
-
-	/**
-	 * @param string $language The language to set for this enhancement.
-	 */
-	public function set_language($language) {
-		$this->language = $language;
-	}
-
-} 
+}

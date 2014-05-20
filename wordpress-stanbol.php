@@ -35,6 +35,7 @@ require_once 'config.php';
 require 'vendor/autoload.php';
 require 'src/WordPressStanbol/StanbolEnhancer.php';
 require 'src/WordPressStanbol/Models/EnhancementResult.php';
+require 'src/WordPressStanbol/Models/TextAnnotation.php';
 require 'src/WordPressStanbol/Models/Enhancement.php';
 require 'src/WordPressStanbol/Models/LanguageEnhancement.php';
 
