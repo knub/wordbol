@@ -7,7 +7,7 @@
 * License: MIT
 */
 
-/*  The MIT License (MIT)
+/**  The MIT License (MIT)
 
     Copyright (c) 2014 Stefan Bunk
 
@@ -29,24 +29,41 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 */
-$response = wp_remote_post("http://localhost:8080/enhancer/", array(
-	'httpversion' => '1.1',
-	'headers' => array(
-		//'Accept' => 'application/rdf+json',
-		'Accept' => 'text/turtle',
-		'Content-Type' => 'application/x-www-form-urlencoded',
-	),
-	'body' => array(
-		'content' => 'The Stanbol enhancer can detect famous cities such as Paris and people such as Bob Marley.'
-	),
-));
-if ( is_wp_error( $response ) ) {
-	$error_message = $response->get_error_message();
-	echo "Something went wrong: $error_message";
-} else {
-	echo 'Response:<pre>';
-	print_r( esc_html( $response['body'] ) );
-	echo '</pre>';
-}
+
+require "config.php";
+require "vendor/autoload.php";
+require "src/WordPressStanbol/StanbolEnhancer.php";
+
+$enhancer = new StanbolEnhancer();
+$enhancer->enhance('The Stanbol enhancer can detect famous cities such as Paris and people such as Bob Marley.');
+
+//$response = wp_remote_post("http://localhost:8080/enhancer/", array(
+//	'httpversion' => '1.1',
+//	'headers' => array(
+//		//'Accept' => 'application/rdf+json',
+//		'Accept' => 'text/turtle',
+//		'Content-Type' => 'application/x-www-form-urlencoded',
+//	),
+//	'body' => array(
+//		'content' =>
+//	),
+//));
+//if ( is_wp_error( $response ) ) {
+//	$error_message = $response->get_error_message();
+//	echo "Something went wrong: $error_message";
+//} else {
+//	echo '<br /><br /><br /><br /><br /><br /><br /><br /><br />';
+//	$graph = new EasyRdf_Graph();
+//	$graph->parse($response['body'], 'turtle');
+//	$resources = $graph->allOfType('http://fise.iks-project.eu/ontology/Enhancement');
+//	echo '<ul>';
+//	array_walk($resources, function($resource) {
+//		echo '<li>' . $resource . '</li>';
+//	});
+//	echo '<pre>';
+//	print_r($resources);
+//	echo '</pre>';
+//	echo '</ul>';
+//}
 ?>
 
