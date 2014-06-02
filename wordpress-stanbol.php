@@ -34,6 +34,8 @@ error_reporting(E_ALL);
 require_once 'config.php';
 require 'vendor/autoload.php';
 require 'src/WordPressStanbol/StanbolEnhancer.php';
+require 'src/WordPressStanbol/AdminHtml.php';
+require 'src/WordPressStanbol/PostContentUpdater.php';
 require 'src/WordPressStanbol/Models/EnhancementResult.php';
 require 'src/WordPressStanbol/Models/TextAnnotation.php';
 require 'src/WordPressStanbol/Models/Enhancement.php';
@@ -43,37 +45,21 @@ require 'src/WordPressStanbol/Models/EntityAnnotationEnhancement.php';
 $enhancer = new WordPressStanbol\StanbolEnhancer();
 
 add_action('post_submitbox_misc_actions', function() {
-?>
-	<div class="misc-pub-section my-options">
-		<input name="stanbol" type="submit" class="button button-primary button-large" id="stanbol" value="Run enhancement">
-	</div>
-<?php
+	echo \WordPressStanbol\AdminHtml::runStanbolButtonHtml();
 });
 add_action('edit_form_after_editor', function($post) use ($enhancer) {
-	echo '<input name="stanbol" type="text" id="stanbol" value="text" />';
-	echo '<input name="text" type="submit" id="text" value="text" />';
-//	echo '<pre>';
-//	var_dump($_POST);
-//	var_dump($enhancer->enhance($post->post_content));
-//	echo '</pre>';
+	echo \WordPressStanbol\AdminHtml::stanbolSelectionHtml();
 });
 function integrate_stanbol_features($post_id) {
 	global $enhancer;
-	$post = get_post($post_id);
-	$content = $post->post_content;
+	if (!isset($_POST['enhancement']))
+		return;
+	$content = get_post($post_id)->post_content;
 	remove_action('save_post', 'integrate_stanbol_features');
-	$result = $enhancer->enhance($content)->get_entity_annotations();
-	$result->rewind();
-	while ($result->valid()) {
-		$text_annotation = $result->current();
-		$entity_annotation = $result->getInfo();
-		$link = $entity_annotation[0]->get_resource();
-		$content = substr_replace($content, '</a>', $text_annotation->get_end() + 1, 0);
-		$content = substr_replace($content, "<a href='$link'>", $text_annotation->get_start(), 0);
-		break;
-
-	}
-	wp_update_post(array('ID' => $post_id, 'post_content' => $content) );
+	$annotations = $enhancer->enhance($content)->get_entity_annotations();
+	$integrator = new \WordPressStanbol\PostContentUpdater($content);
+	$content = $integrator->integrate_annotations($annotations);
+	wp_update_post(array('ID' => $post_id, 'post_content' => $content));
 //	echo '<pre>';
 //	var_dump($_POST);
 //	wp_die("Stop here.");
