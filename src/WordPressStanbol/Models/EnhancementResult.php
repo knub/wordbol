@@ -48,6 +48,10 @@ class EnhancementResult {
 		$this->entity_annotations[$text_annotation] = $entity_annotations;
 	}
 
+	public function get_entity_annotations() {
+		return $this->entity_annotations;
+	}
+
 	public function compare_confidences($e1, $e2) {
 		$v = $e2->get_confidence() - $e1->get_confidence();
 		if ($v < 0)

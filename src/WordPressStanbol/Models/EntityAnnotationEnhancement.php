@@ -15,7 +15,7 @@ class EntityAnnotationEnhancement extends Enhancement {
 	/**
 	 * @return string The linked/annotated resource for this enhancement, e.g. 'http://dbpedia.org/resource/Paris'.
 	 */
-	public function getResource() {
+	public function get_resource() {
 		return $this->resource;
 	}
 

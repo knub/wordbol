@@ -87,7 +87,7 @@ class StanbolEnhancer {
 	private function handle_response($response) {
 		if (is_wp_error($response)) {
 			$error_message = $response->get_error_message();
-			throw new Exception($error_message);
+			throw new \Exception($error_message);
 		} else {
 			$graph = new EasyRdf_Graph();
 			$graph->parse($response['body'], 'turtle');

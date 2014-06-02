@@ -41,37 +41,50 @@ require 'src/WordPressStanbol/Models/LanguageEnhancement.php';
 require 'src/WordPressStanbol/Models/EntityAnnotationEnhancement.php';
 
 $enhancer = new WordPressStanbol\StanbolEnhancer();
+
+add_action('post_submitbox_misc_actions', function() {
+?>
+	<div class="misc-pub-section my-options">
+		<input name="stanbol" type="submit" class="button button-primary button-large" id="stanbol" value="Run enhancement">
+	</div>
+<?php
+});
+add_action('edit_form_after_editor', function($post) use ($enhancer) {
+	echo '<input name="stanbol" type="text" id="stanbol" value="text" />';
+	echo '<input name="text" type="submit" id="text" value="text" />';
+//	echo '<pre>';
+//	var_dump($_POST);
+//	var_dump($enhancer->enhance($post->post_content));
+//	echo '</pre>';
+});
+function integrate_stanbol_features($post_id) {
+	global $enhancer;
+	$post = get_post($post_id);
+	$content = $post->post_content;
+	remove_action('save_post', 'integrate_stanbol_features');
+	$result = $enhancer->enhance($content)->get_entity_annotations();
+	$result->rewind();
+	while ($result->valid()) {
+		$text_annotation = $result->current();
+		$entity_annotation = $result->getInfo();
+		$link = $entity_annotation[0]->get_resource();
+		$content = substr_replace($content, '</a>', $text_annotation->get_end() + 1, 0);
+		$content = substr_replace($content, "<a href='$link'>", $text_annotation->get_start(), 0);
+		break;
+
+	}
+	wp_update_post(array('ID' => $post_id, 'post_content' => $content) );
+//	echo '<pre>';
+//	var_dump($_POST);
+//	wp_die("Stop here.");
+//	echo '</pre>';
+	add_action('save_post', 'integrate_stanbol_features');
+};
+add_action('save_post', 'integrate_stanbol_features');
+
 echo '<br /><br /><br /><pre>';
-var_dump($enhancer->enhance('The Stanbol enhancer can detect famous cities such as Paris and people such as Bob Marley. In Deutschland denkt man aber anders. Deutschland.'));
+//var_dump($enhancer->enhance('The Stanbol enhancer can detect famous cities such as Paris and people such as Bob Marley. In Deutschland denkt man aber anders. Deutschland.'));
 echo '</pre>';
 
-//$response = wp_remote_post("http://localhost:8080/enhancer/", array(
-//	'httpversion' => '1.1',
-//	'headers' => array(
-//		//'Accept' => 'application/rdf+json',
-//		'Accept' => 'text/turtle',
-//		'Content-Type' => 'application/x-www-form-urlencoded',
-//	),
-//	'body' => array(
-//		'content' =>
-//	),
-//));
-//if ( is_wp_error( $response ) ) {
-//	$error_message = $response->get_error_message();
-//	echo "Something went wrong: $error_message";
-//} else {
-//	echo '<br /><br /><br /><br /><br /><br /><br /><br /><br />';
-//	$graph = new EasyRdf_Graph();
-//	$graph->parse($response['body'], 'turtle');
-//	$resources = $graph->allOfType('http://fise.iks-project.eu/ontology/Enhancement');
-//	echo '<ul>';
-//	array_walk($resources, function($resource) {
-//		echo '<li>' . $resource . '</li>';
-//	});
-//	echo '<pre>';
-//	print_r($resources);
-//	echo '</pre>';
-//	echo '</ul>';
-//}
 ?>
 
