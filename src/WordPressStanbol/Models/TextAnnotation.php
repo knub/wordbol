@@ -45,6 +45,10 @@ class TextAnnotation {
 		return $this->end;
 	}
 
+	public function length() {
+		return $this->end - $this->start;
+	}
+
 	/**
 	 * @return string The selected text.
 	 */

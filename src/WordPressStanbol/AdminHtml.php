@@ -11,7 +11,7 @@ class AdminHtml {
 		</div>
 TEXT;
 	}
-	public static function stanbolSelectionHtml($annotations) {
+	public static function stanbolSelectionHtml($annotations, $post_content) {
 		$annotations->rewind();
 		$content = <<<HTML
 			<h2>Recognized entities</h2>
@@ -21,25 +21,35 @@ HTML;
 		$form_value = 0;
 		while ($annotations->valid()) {
 			$text = $annotations->current();
-			if (count($annotations->getInfo()) === 0) {
-				echo '<pre>';
-				var_dump($text);
-				var_dump($annotations->getInfo());
-				echo '</pre>';
-				wp_die("STOP");
-				$annotations->next();
-				continue;
-			}
 			$entity = $annotations->getInfo()[0];
 			$resource = $entity->get_resource();
-				$content .= <<<TEXT
+			$surrounding_text = self::get_surrounding_text($text, $post_content);
+			$content .= <<<TEXT
 			<input type="checkbox" name="entity_enhancement[]" id="enhancement$form_value" value="$resource" />
-			<label for="enhancement$form_value"><div>{$text->get_text()} is <a href="$resource">$resource</a><div class="wordpress-stanbol-entities-info">Thisisjustsomeinfo.</div></div></label>
+			<label for="enhancement$form_value">
+				<div>
+					{$text->get_text()}
+					<div class="wordpress-stanbol-entities-info">
+						<a href="$resource">$resource</a>
+						$surrounding_text
+					</div>
+				</div>
+			</label>
 TEXT;
 			$form_value += 1;
 			$annotations->next();
 		}
 		$content .= '</div>';
 		return $content;
+	}
+
+	// TODO: Sophisticate
+	private static function get_surrounding_text($text, $post_content) {
+		$snippet_size = 50;
+		$snippet_start = max(0, $text->get_start() - $snippet_size);
+		$snippet = substr($post_content, $snippet_start, $snippet_start === 0 ? $text->get_start() : $snippet_size);
+		$snippet .= '<strong>' . substr($post_content, $text->get_start(), $text->length()) . '</strong>';
+		$snippet .= substr($post_content, $text->get_start() + $text->length(), $snippet_size);
+		return $snippet;
 	}
 }

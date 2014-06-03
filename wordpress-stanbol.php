@@ -54,12 +54,9 @@ add_action('post_submitbox_misc_actions', function() {
 	echo \WordPressStanbol\AdminHtml::runStanbolButtonHtml();
 });
 add_action('edit_form_after_editor', function($post) use ($enhancer) {
-//	echo '<pre>';
-//	var_dump($post);
-//	echo '</pre>';
-	$content = $post->post_content;
-	$annotations = $enhancer->enhance($content)->get_entity_annotations();
-	echo \WordPressStanbol\AdminHtml::stanbolSelectionHtml($annotations);
+	$post_content = $post->post_content;
+	$annotations = $enhancer->enhance($post_content)->get_entity_annotations();
+	echo \WordPressStanbol\AdminHtml::stanbolSelectionHtml($annotations, $post_content);
 });
 function integrate_stanbol_features($post_id) {
 	global $enhancer;
