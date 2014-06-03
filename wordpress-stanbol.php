@@ -62,18 +62,32 @@ add_action('edit_form_after_editor', function($post) use ($enhancer) {
 });
 function integrate_stanbol_features($post_id) {
 	global $enhancer;
-	if (!isset($_POST['enhancement']))
+	if (!isset($_POST['enhancement']) || !isset($_POST['entity_enhancement']))
 		return;
+	$selected_enhancements = $_POST['entity_enhancement'];
+//	echo '<pre>';
+//	var_dump($_POST['entity_enhancement']);
+//	echo '</pre>';
+//	wp_die("Stop here.");
+
 	$content = get_post($post_id)->post_content;
 	remove_action('save_post', 'integrate_stanbol_features');
-	$annotations = $enhancer->enhance($content)->get_entity_annotations();
 	$integrator = new \WordPressStanbol\PostContentUpdater($content);
+	$annotations = $enhancer->enhance($content)->get_entity_annotations();
+	$annotations_to_be_removed = array();
+	foreach ($annotations as $key) {
+		echo '<pre>';
+		var_dump($annotations->offsetGet($key));
+		echo '</pre>';
+
+		if (!in_array($annotations[$key][0]->get_resource(), $selected_enhancements))
+			array_push($annotations_to_be_removed, $key);
+	}
+	foreach ($annotations_to_be_removed as $remove) {
+		$annotations->detach($remove);
+	}
 	$content = $integrator->integrate_annotations($annotations);
-//	wp_update_post(array('ID' => $post_id, 'post_content' => $content));
-//	echo '<pre>';
-//	var_dump($_POST);
-//	wp_die("Stop here.");
-//	echo '</pre>';
+	wp_update_post(array('ID' => $post_id, 'post_content' => $content));
 	add_action('save_post', 'integrate_stanbol_features');
 };
 add_action('save_post', 'integrate_stanbol_features');

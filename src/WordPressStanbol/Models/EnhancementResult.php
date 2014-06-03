@@ -49,7 +49,8 @@ class EnhancementResult {
 	}
 
 	public function get_entity_annotations() {
-		return $this->entity_annotations;
+		$clone = $this->entity_annotations;
+		return $clone;
 	}
 
 	public function compare_confidences($e1, $e2) {

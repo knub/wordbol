@@ -18,9 +18,10 @@ TEXT;
 		while ($annotations->valid()) {
 			$text = $annotations->current();
 			$entity = $annotations->getInfo()[0];
+			$resource = $entity->get_resource();
 				$content .= <<<TEXT
-			<input type="checkbox" name="entityEnhancement[]" id="enhancement$form_value" value="$form_value" />
-			<label for="enhancement$form_value"><div>{$text->get_text()} is <a href="{$entity->get_resource()}">{$entity->get_resource()}</a></div></label>
+			<input type="checkbox" name="entity_enhancement[]" id="enhancement$form_value" value="$resource" />
+			<label for="enhancement$form_value"><div>{$text->get_text()} is <a href="$resource">$resource</a></div></label>
 TEXT;
 			$form_value += 1;
 			$annotations->next();
