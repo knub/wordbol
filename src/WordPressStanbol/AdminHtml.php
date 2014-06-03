@@ -7,7 +7,7 @@ class AdminHtml {
 	public static function runStanbolButtonHtml() {
 		return <<<TEXT
 		<div class="misc-pub-section my-options">
-			<input name="enhancement" type="submit" class="button button-primary button-large" id="enhancement" value="Run enhancement">
+			<input name="enhancement" type="submit" class="button button-primary button-large" id="enhancement" value="Enhance with selected entities">
 		</div>
 TEXT;
 	}
