@@ -11,10 +11,21 @@ class AdminHtml {
 		</div>
 TEXT;
 	}
-	public static function stanbolSelectionHtml() {
-		return <<<TEXT
-		<!--<input name="stanbol" type="text" id="stanbol" value="text" />-->
-		<input name="text" type="submit" id="text" value="text" />'
+	public static function stanbolSelectionHtml($annotations) {
+		$annotations->rewind();
+		$content = '';
+		$form_value = 0;
+		while ($annotations->valid()) {
+			$text = $annotations->current();
+			$entity = $annotations->getInfo()[0];
+				$content .= <<<TEXT
+			<input type="checkbox" name="entityEnhancement[]" id="enhancement$form_value" value="$form_value" />
+			<label for="enhancement$form_value">{$text->get_text()} is {$entity->get_resource()}</label>
+			<br />
 TEXT;
+			$form_value += 1;
+			$annotations->next();
+		}
+		return $content;
 	}
 }

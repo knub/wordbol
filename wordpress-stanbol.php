@@ -48,7 +48,12 @@ add_action('post_submitbox_misc_actions', function() {
 	echo \WordPressStanbol\AdminHtml::runStanbolButtonHtml();
 });
 add_action('edit_form_after_editor', function($post) use ($enhancer) {
-	echo \WordPressStanbol\AdminHtml::stanbolSelectionHtml();
+//	echo '<pre>';
+//	var_dump($post);
+//	echo '</pre>';
+	$content = $post->post_content;
+	$annotations = $enhancer->enhance($content)->get_entity_annotations();
+	echo \WordPressStanbol\AdminHtml::stanbolSelectionHtml($annotations);
 });
 function integrate_stanbol_features($post_id) {
 	global $enhancer;
@@ -59,7 +64,7 @@ function integrate_stanbol_features($post_id) {
 	$annotations = $enhancer->enhance($content)->get_entity_annotations();
 	$integrator = new \WordPressStanbol\PostContentUpdater($content);
 	$content = $integrator->integrate_annotations($annotations);
-	wp_update_post(array('ID' => $post_id, 'post_content' => $content));
+//	wp_update_post(array('ID' => $post_id, 'post_content' => $content));
 //	echo '<pre>';
 //	var_dump($_POST);
 //	wp_die("Stop here.");
