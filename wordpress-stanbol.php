@@ -43,6 +43,12 @@ require 'src/WordPressStanbol/Models/LanguageEnhancement.php';
 require 'src/WordPressStanbol/Models/EntityAnnotationEnhancement.php';
 
 $enhancer = new WordPressStanbol\StanbolEnhancer();
+add_action('admin_head', function (){
+	wp_enqueue_script('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/js/main.js', array('jquery'));
+	wp_enqueue_style('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/css/main.css');
+//	echo '<style>[for="wp_welcome_panel-hide"] {display: none !important;}</style>';
+});
+
 
 add_action('post_submitbox_misc_actions', function() {
 	echo \WordPressStanbol\AdminHtml::runStanbolButtonHtml();

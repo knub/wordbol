@@ -13,7 +13,7 @@ TEXT;
 	}
 	public static function stanbolSelectionHtml($annotations) {
 		$annotations->rewind();
-		$content = '';
+		$content = '<div id="wordpress-stanbol-entities">';
 		$form_value = 0;
 		while ($annotations->valid()) {
 			$text = $annotations->current();
@@ -26,6 +26,7 @@ TEXT;
 			$form_value += 1;
 			$annotations->next();
 		}
+		$content .= '</div>';
 		return $content;
 	}
 }
