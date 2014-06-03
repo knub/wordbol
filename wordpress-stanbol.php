@@ -44,6 +44,7 @@ require 'src/WordPressStanbol/Models/EntityAnnotationEnhancement.php';
 
 $enhancer = new WordPressStanbol\StanbolEnhancer();
 add_action('admin_head', function (){
+	wp_enqueue_script('knubtip', '/wp-content/plugins/wordpress-stanbol/js/jquery.knubtip.js', array('jquery'));
 	wp_enqueue_script('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/js/main.js', array('jquery'));
 	wp_enqueue_style('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/css/main.css');
 });

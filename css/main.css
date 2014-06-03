@@ -18,6 +18,19 @@
 	text-align: center;
 }
 
+.wordpress-stanbol-entities-info {
+	display: none;
+	max-width: 500px;
+	z-index: 999;
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 0;
+
+	background: rgba(0, 0, 0, 0.92);
+
+	background: white;
+}
 #wordpress-stanbol-entities label {
 	float: left;
 	display: block;
@@ -25,7 +38,7 @@
 }
 
 #wordpress-stanbol-entities input[type=checkbox]:checked + label div {
-	background: green;
+	background: seagreen;
 	 -khtml-user-select: none;
 	   -moz-user-select: none;
 	    -ms-user-select: none;
