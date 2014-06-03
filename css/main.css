@@ -1,2 +1,34 @@
-#wordpress-stanbol-entities {
+#wordpress-stanbol-entities input[] {
+}
+#wordpress-stanbol-entities input[type=checkbox] {
+	display: none;
+	float: left;
+}
+
+#wordpress-stanbol-entities a {
+	color: black;
+}
+
+#wordpress-stanbol-entities div {
+	background: lightgrey;
+	width: 400px;
+	height: 100px;
+	line-height: 100px;
+	color: black;
+	text-align: center;
+}
+
+#wordpress-stanbol-entities label {
+	float: left;
+	display: block;
+	margin-right: 10px;
+}
+
+#wordpress-stanbol-entities input[type=checkbox]:checked + label div {
+	background: green;
+	 -khtml-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	        user-select: none;
+	-webkit-user-select: none;
 }
