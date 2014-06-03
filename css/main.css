@@ -11,9 +11,9 @@
 
 #wordpress-stanbol-entities div {
 	background: lightgrey;
-	width: 400px;
-	height: 100px;
-	line-height: 100px;
+	width: 300px;
+	height: 50px;
+	line-height: 50px;
 	color: black;
 	text-align: center;
 }
@@ -35,6 +35,7 @@
 	float: left;
 	display: block;
 	margin-right: 10px;
+	margin-bottom: 10px;
 }
 
 #wordpress-stanbol-entities input[type=checkbox]:checked + label div {

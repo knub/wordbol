@@ -13,10 +13,23 @@ TEXT;
 	}
 	public static function stanbolSelectionHtml($annotations) {
 		$annotations->rewind();
-		$content = '<h2>I found the following entities</h2><div id="wordpress-stanbol-entities">';
+		$content = <<<HTML
+			<h2>Recognized entities</h2>
+			<p>Select entities to create a link for, then click "Enhance with selected entities":</p>
+			<div id="wordpress-stanbol-entities">
+HTML;
 		$form_value = 0;
 		while ($annotations->valid()) {
 			$text = $annotations->current();
+			if (count($annotations->getInfo()) === 0) {
+				echo '<pre>';
+				var_dump($text);
+				var_dump($annotations->getInfo());
+				echo '</pre>';
+				wp_die("STOP");
+				$annotations->next();
+				continue;
+			}
 			$entity = $annotations->getInfo()[0];
 			$resource = $entity->get_resource();
 				$content .= <<<TEXT

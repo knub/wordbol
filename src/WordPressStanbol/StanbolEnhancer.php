@@ -66,10 +66,12 @@ class StanbolEnhancer {
 		array_walk($entity_annotations, function($annotation) use ($enhancement_result) {
 			if (!$annotation->hasProperty('http://fise.iks-project.eu/ontology/entity-reference'))
 				return;
-			$text_annotation  = $annotation->getResource('<http://purl.org/dc/terms/relation>')->getUri();
-			$entity_reference = $annotation->getResource('<http://fise.iks-project.eu/ontology/entity-reference>')->getUri();
-			$confidence       = floatval($annotation->getLiteral('<http://fise.iks-project.eu/ontology/confidence>')->getValue());
-			$enhancement_result->add_entity_annotation_for($text_annotation, new EntityAnnotationEnhancement($entity_reference, $confidence));
+			$text_annotations  = $annotation->all('<http://purl.org/dc/terms/relation>');
+			array_walk($text_annotations, function($text_annotation) use ($annotation, $enhancement_result) {
+				$entity_reference = $annotation->getResource('<http://fise.iks-project.eu/ontology/entity-reference>')->getUri();
+				$confidence = floatval($annotation->getLiteral('<http://fise.iks-project.eu/ontology/confidence>')->getValue());
+				$enhancement_result->add_entity_annotation_for($text_annotation->getUri(), new EntityAnnotationEnhancement($entity_reference, $confidence));
+			});
 		});
 
 	}
