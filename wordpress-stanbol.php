@@ -67,10 +67,5 @@ function integrate_stanbol_features($post_id) {
 	add_action('save_post', 'integrate_stanbol_features');
 };
 add_action('save_post', 'integrate_stanbol_features');
-
-echo '<br /><br /><br /><pre>';
-//var_dump($enhancer->enhance('The Stanbol enhancer can detect famous cities such as Paris and people such as Bob Marley. In Deutschland denkt man aber anders. Deutschland.'));
-echo '</pre>';
-
 ?>
 
