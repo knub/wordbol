@@ -12,8 +12,10 @@
 			"email": "stefan.bunk@googlemail.com"
 		}
 	],
-//	"psr-4": {
-//		"WordPressStanbol\\": "src/"
-//	},
+	"autoload": {
+		"psr-0": {
+			"WordPressStanbol": "src/"
+		}
+	},
 	"minimum-stability": "stable"
 }

@@ -33,14 +33,6 @@
 error_reporting(E_ALL);
 require_once 'config.php';
 require 'vendor/autoload.php';
-require 'src/WordPressStanbol/StanbolEnhancer.php';
-require 'src/WordPressStanbol/AdminHtml.php';
-require 'src/WordPressStanbol/PostContentUpdater.php';
-require 'src/WordPressStanbol/Models/EnhancementResult.php';
-require 'src/WordPressStanbol/Models/TextAnnotation.php';
-require 'src/WordPressStanbol/Models/Enhancement.php';
-require 'src/WordPressStanbol/Models/LanguageEnhancement.php';
-require 'src/WordPressStanbol/Models/EntityAnnotationEnhancement.php';
 
 $enhancer = new WordPressStanbol\StanbolEnhancer();
 add_action('admin_head', function (){
@@ -74,9 +66,7 @@ function integrate_stanbol_features($post_id) {
 	$annotations = $enhancer->enhance($content)->get_entity_annotations();
 	$annotations_to_be_removed = array();
 	foreach ($annotations as $key) {
-		echo '<pre>';
 		var_dump($annotations->offsetGet($key));
-		echo '</pre>';
 
 		if (!in_array($annotations[$key][0]->get_resource(), $selected_enhancements))
 			array_push($annotations_to_be_removed, $key);
