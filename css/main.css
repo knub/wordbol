@@ -38,6 +38,11 @@
 	margin-bottom: 10px;
 }
 
+#map-canvas {
+	height: 400px;
+	width: 400px;
+}
+
 #wordpress-stanbol-entities input[type=checkbox]:checked + label div {
 	background: seagreen;
 	 -khtml-user-select: none;

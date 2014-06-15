@@ -84,12 +84,20 @@ class StanbolEnhancer {
 	}
 
 	private function determine_entity_type($annotation) {
-		$type = $annotation->allResources('<http://fise.iks-project.eu/ontology/entity-type>');
-		echo '<pre>';
-		var_dump($type);
-		echo '</pre>';
-		return EntityType::Person;
+		$types = $annotation->allResources('<http://fise.iks-project.eu/ontology/entity-type>');
+		$entity_type = 'ABC';
+
+		foreach ($types as $type) {
+			$uri = $type->getUri();
+			if ($uri === 'http://dbpedia.org/ontology/Place') {
+				return EntityType::Place;
+			} else if ($uri === 'http://dbpedia.org/ontology/Person') {
+				return EntityType::Person;
+			}
+		};
+		return EntityType::Unkown;
 	}
+
 	private function build_remote_post_parameters() {
 		return array(
 			'httpversion' => '1.1',

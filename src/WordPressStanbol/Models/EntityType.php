@@ -4,8 +4,9 @@ namespace WordPressStanbol\Models;
 
 
 abstract class EntityType {
-	const Person = "Person";
-	const Place = "Place";
+	const Person  = "Person";
+	const Place   = "Place";
+	const Unknown = "Unknown";
 }
 
 ?>

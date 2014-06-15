@@ -57,7 +57,7 @@ TEXT;
 			$form_value += 1;
 			$annotations->next();
 		}
-		$content .= '</div>';
+		$content .= '</div><br style="clear: both" /><div id="map-canvas"></div>';
 		return $content;
 	}
 
