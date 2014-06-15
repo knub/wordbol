@@ -24,14 +24,19 @@ TEXT;
 			</script>
 HTML;
 		$form_value = 0;
+		$already_seen_resources = array();
 		while ($annotations->valid()) {
 			$text = $annotations->current();
-			if (count($annotations->getInfo()) === 0) {
-				$annotations->next();
+			$entities = $annotations->getInfo();
+			$annotations->next();
+			if (count($entities) === 0)
 				continue;
-			}
-			$entity = $annotations->getInfo()[0];
+			$entity = $entities[0];
 			$resource = $entity->get_resource();
+			if (in_array($resource, $already_seen_resources))
+				continue;
+
+			array_push($already_seen_resources, $resource);
 			$type = $entity->get_entity_type();
 			$surrounding_text = self::get_surrounding_text($text, $post_content);
 			$confidence = round($entity->get_confidence() * 100, 0);
