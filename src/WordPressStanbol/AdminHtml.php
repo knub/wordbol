@@ -89,9 +89,10 @@ END;
 		$snippet .= substr($post_content, $text->get_start() + $text->length(), $snippet_window);
 		$snippet =  strip_tags($snippet, '<strongxxx>');
 
-		$snippet_size = 60;
+		$snippet_size = 120;
 		$index_start = max(strpos($snippet, '<strongxxx>') - $snippet_size, 0);
-		$index_end = strpos($snippet, '</strongxxx>');
-		return '…' . str_replace('</strongxxx>', '</strong>', str_replace('<strongxxx>', '<strong>', substr($snippet, $index_start, $index_end  + $snippet_size))) . '…';
+		$snippet_length = strpos($snippet, '</strongxxx>') - $index_start + $snippet_size;
+//		wp_die("$index_start $index_end");
+		return '…' . str_replace('</strongxxx>', '</strong>', str_replace('<strongxxx>', '<strong>', substr($snippet, $index_start, $snippet_length))) . '…';
 	}
 }
