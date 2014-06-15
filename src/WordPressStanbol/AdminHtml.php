@@ -24,14 +24,27 @@ HTML;
 			$entity = $annotations->getInfo()[0];
 			$resource = $entity->get_resource();
 			$surrounding_text = self::get_surrounding_text($text, $post_content);
+			$confidence = round($entity->get_confidence() * 100, 0);
 			$content .= <<<TEXT
 			<input type="checkbox" name="entity_enhancement[]" id="enhancement$form_value" value="$resource" />
 			<label for="enhancement$form_value">
 				<div>
 					{$text->get_text()}
 					<div class="wordpress-stanbol-entities-info">
-						<a href="$resource">$resource</a>
-						$surrounding_text
+						<table>
+							<tr>
+								<td>Resource</td>
+								<td><a href="$resource">$resource</a></td>
+							</tr>
+							<tr>
+								<td>Context</td>
+								<td>$surrounding_text</td>
+							</tr>
+							<tr>
+								<td>Confidence</td>
+								<td>$confidence %</td>
+							</tr>
+						</table>
 					</div>
 				</div>
 			</label>
@@ -45,11 +58,15 @@ TEXT;
 
 	// TODO: Sophisticate
 	private static function get_surrounding_text($text, $post_content) {
-		$snippet_size = 50;
+		$snippet_size = 70;
 		$snippet_start = max(0, $text->get_start() - $snippet_size);
 		$snippet = substr($post_content, $snippet_start, $snippet_start === 0 ? $text->get_start() : $snippet_size);
 		$snippet .= '<strong>' . substr($post_content, $text->get_start(), $text->length()) . '</strong>';
 		$snippet .= substr($post_content, $text->get_start() + $text->length(), $snippet_size);
+		$snippet =  strip_tags($snippet, '<strong>');
+		if ($snippet_start === 0)
+			return $snippet;
 		return $snippet;
+//		return substr($snippet, 10, strlen($snippet) - 20);
 	}
 }
