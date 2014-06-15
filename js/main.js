@@ -14,9 +14,11 @@ jQuery(function($) {
 		geocoder.geocode( { 'address': address}, function(results, status) {
 			placesCount += 1;
 			if (status == google.maps.GeocoderStatus.OK) {
+
 				placesLocations.push({
-					'place': results[0].geometry.location,
-					'bounds': results[0].geometry.viewport
+					place: results[0].geometry.location,
+					bounds: results[0].geometry.viewport,
+					text: address
 				});
 				console.log("Geocode successful.");
 			} else
@@ -42,9 +44,16 @@ function initialize() {
 function configureMapWithPlaces(placesLocations) {
 	var bounds = new google.maps.LatLngBounds();
 	placesLocations.forEach(function(geometry) {
+		var infowindow = new google.maps.InfoWindow({
+			content: "<strong>" + geometry.text + "</strong>"
+		});
 		var marker = new google.maps.Marker({
 			map: map,
-			position: geometry.place
+			position: geometry.place,
+			title: geometry.text
+		});
+		google.maps.event.addListener(marker, 'click', function() {
+			infowindow.open(map, marker);
 		});
 		// Code to center around the markers from here:
 		// http://blog.shamess.info/2009/09/29/zoom-to-fit-all-markers-on-google-maps-api-v3/
