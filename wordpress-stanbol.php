@@ -49,6 +49,7 @@ add_action('post_submitbox_misc_actions', function() {
 add_action('edit_form_after_editor', function($post) use ($enhancer) {
 	$post_content = $post->post_content;
 	$annotations = $enhancer->enhance($post_content)->get_entity_annotations();
+//	$annotations = array();
 	echo \WordPressStanbol\AdminHtml::stanbolSelectionHtml($annotations, $post_content);
 });
 function integrate_stanbol_features($post_id) {
@@ -56,10 +57,6 @@ function integrate_stanbol_features($post_id) {
 	if (!isset($_POST['enhancement']) || !isset($_POST['entity_enhancement']))
 		return;
 	$selected_enhancements = $_POST['entity_enhancement'];
-//	echo '<pre>';
-//	var_dump($_POST['entity_enhancement']);
-//	echo '</pre>';
-//	wp_die("Stop here.");
 
 	$content = get_post($post_id)->post_content;
 	remove_action('save_post', 'integrate_stanbol_features');

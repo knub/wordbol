@@ -102,7 +102,7 @@ class StanbolEnhancer {
 		return array(
 			'httpversion' => '1.1',
 			'headers' => array(
-				'Accept' => 'text/turtle',
+				'Accept' => 'text/rdf+nt',
 				'Content-Type' => 'application/x-www-form-urlencoded',
 			)
 		);
@@ -114,7 +114,7 @@ class StanbolEnhancer {
 			throw new \Exception($error_message);
 		} else {
 			$graph = new EasyRdf_Graph();
-			$graph->parse($response['body'], 'turtle');
+			$graph->parse($response['body'], 'ntriples');
 			return $graph;
 		}
 	}
