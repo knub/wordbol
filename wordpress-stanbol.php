@@ -67,8 +67,6 @@ function integrate_stanbol_features($post_id) {
 	$annotations = $enhancer->enhance($content)->get_entity_annotations();
 	$annotations_to_be_removed = array();
 	foreach ($annotations as $key) {
-		var_dump($annotations->offsetGet($key));
-
 		if (!in_array($annotations[$key][0]->get_resource(), $selected_enhancements))
 			array_push($annotations_to_be_removed, $key);
 	}

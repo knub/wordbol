@@ -77,17 +77,17 @@ END;
 		return $content;
 	}
 
-	// TODO: Sophisticate
 	private static function get_surrounding_text($text, $post_content) {
-		$snippet_size = 70;
-		$snippet_start = max(0, $text->get_start() - $snippet_size);
-		$snippet = substr($post_content, $snippet_start, $snippet_start === 0 ? $text->get_start() : $snippet_size);
-		$snippet .= '<strong>' . substr($post_content, $text->get_start(), $text->length()) . '</strong>';
-		$snippet .= substr($post_content, $text->get_start() + $text->length(), $snippet_size);
-		$snippet =  strip_tags($snippet, '<strong>');
-		if ($snippet_start === 0)
-			return $snippet;
-		return $snippet;
-//		return substr($snippet, 10, strlen($snippet) - 20);
+		$snippet_window = 700000000;
+		$snippet_start = max(0, $text->get_start() - $snippet_window);
+		$snippet = substr($post_content, $snippet_start, $snippet_start === 0 ? $text->get_start() : $snippet_window);
+		$snippet .= '<strongxxx>' . substr($post_content, $text->get_start(), $text->length()) . '</strongxxx>';
+		$snippet .= substr($post_content, $text->get_start() + $text->length(), $snippet_window);
+		$snippet =  strip_tags($snippet, '<strongxxx>');
+
+		$snippet_size = 60;
+		$index_start = strpos($snippet, '<strongxxx>');
+		$index_end = strpos($snippet, '</strongxxx>');
+		return str_replace('</strongxxx>', '</strong>', str_replace('<strongxxx>', '<strong>', substr($snippet, $index_start - $snippet_size, $index_end  + $snippet_size)));
 	}
 }

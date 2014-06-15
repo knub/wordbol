@@ -21,7 +21,7 @@
 .wordpress-stanbol-entities-info {
 	display: none;
 	max-width: 500px;
-	z-index: 999;
+	z-index: 99999999;
 	position: absolute;
 	top: 0;
 	left: 0;
