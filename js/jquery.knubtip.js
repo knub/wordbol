@@ -111,9 +111,9 @@
 							}
 						}, settings['wait-time']);
 					}).mouseout(function () {
-						clearTimeout(timer);
 						var tooltipDivSelector = $(this).data('knubtip')['info'];
 						setTimeout(function () {
+							clearTimeout(timer);
 							$(tooltipDivSelector).fadeOut(settings['duration']);
 						}, 1000);
 					});
