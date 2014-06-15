@@ -5,14 +5,18 @@ namespace WordPressStanbol;
 use EasyRdf_Graph;
 use WordPressStanbol\Models\EnhancementResult;
 use WordPressStanbol\Models\EntityAnnotationEnhancement;
+use WordPressStanbol\Models\EntityType;
 use WordPressStanbol\Models\LanguageEnhancement;
 use WordPressStanbol\Models\TextAnnotation;
 
+/**
+ * This class enhances a given text semantically using Apache Stanbol.
+ */
 class StanbolEnhancer {
 
 	/**
 	 * Enhances a given text with semantic annotations like language detection and entity annotation.
-	 * @param $text The text to enhance.
+	 * @param $text string The text to enhance.
 	 * @return EnhancementResult The enhancement result.
 	 */
 	function enhance($text) {
@@ -69,13 +73,23 @@ class StanbolEnhancer {
 			$text_annotations  = $annotation->allResources('<http://purl.org/dc/terms/relation>');
 			array_walk($text_annotations, function($text_annotation) use ($annotation, $enhancement_result) {
 				$entity_reference = $annotation->getResource('<http://fise.iks-project.eu/ontology/entity-reference>')->getUri();
+				$type = $this->determine_entity_type($annotation);
+
+
 				$confidence = floatval($annotation->getLiteral('<http://fise.iks-project.eu/ontology/confidence>')->getValue());
-				$enhancement_result->add_entity_annotation_for($text_annotation->getUri(), new EntityAnnotationEnhancement($entity_reference, $confidence));
+				$enhancement_result->add_entity_annotation_for($text_annotation->getUri(), new EntityAnnotationEnhancement($entity_reference, $type, $confidence));
 			});
 		});
 
 	}
 
+	private function determine_entity_type($annotation) {
+		$type = $annotation->allResources('<http://fise.iks-project.eu/ontology/entity-type>');
+		echo '<pre>';
+		var_dump($type);
+		echo '</pre>';
+		return EntityType::Person;
+	}
 	private function build_remote_post_parameters() {
 		return array(
 			'httpversion' => '1.1',

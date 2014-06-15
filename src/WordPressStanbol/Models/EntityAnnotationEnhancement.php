@@ -6,10 +6,12 @@ namespace WordPressStanbol\Models;
 class EntityAnnotationEnhancement extends Enhancement {
 
 	private $resource;
+	private $entity_type;
 
-	function __construct($resource, $confidence) {
+	function __construct($resource, $entity_type, $confidence) {
 		parent::__construct($confidence);
 		$this->resource = $resource;
+		$this->entity_type = $entity_type;
 	}
 
 	/**
@@ -17,6 +19,13 @@ class EntityAnnotationEnhancement extends Enhancement {
 	 */
 	public function get_resource() {
 		return $this->resource;
+	}
+
+	/**
+	 * @return WordPressStanbol\Models\EntityType The type of this resource, e.g. EntityType::Person.
+	 */
+	public function get_entity_type() {
+		return $this->entity_type;
 	}
 
 }

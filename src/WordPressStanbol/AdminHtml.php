@@ -23,6 +23,7 @@ HTML;
 			$text = $annotations->current();
 			$entity = $annotations->getInfo()[0];
 			$resource = $entity->get_resource();
+			$type = $entity->get_entity_type();
 			$surrounding_text = self::get_surrounding_text($text, $post_content);
 			$confidence = round($entity->get_confidence() * 100, 0);
 			$content .= <<<TEXT
@@ -43,6 +44,10 @@ HTML;
 							<tr>
 								<td>Confidence</td>
 								<td>$confidence %</td>
+							</tr>
+							<tr>
+								<td>Entity Type</td>
+								<td>$type</td>
 							</tr>
 						</table>
 					</div>
