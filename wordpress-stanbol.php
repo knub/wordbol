@@ -35,9 +35,9 @@ require_once 'config.php';
 require 'vendor/autoload.php';
 
 $enhancer = new WordPressStanbol\StanbolEnhancer();
-add_action('admin_head', function (){
+add_action('admin_head', function () {
 	wp_enqueue_script('knubtip', '/wp-content/plugins/wordpress-stanbol/js/jquery.knubtip.js', array('jquery'));
-	wp_enqueue_script('google-maps', 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDJAdivC4VOwITwLhtG2Sji4hNFL72fQOY&sensor=false');
+	wp_enqueue_script('google-maps', 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDJAdivC4VOwITwLhtG2Sji4hNFL72fQOY&sensor=false', $in_footxer = false);
 	wp_enqueue_script('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/js/main.js', array('jquery'));
 	wp_enqueue_style('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/css/main.css');
 });

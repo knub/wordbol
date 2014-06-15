@@ -40,7 +40,7 @@
 
 #map-canvas {
 	height: 400px;
-	width: 400px;
+	width: 600px;
 }
 
 #wordpress-stanbol-entities input[type=checkbox]:checked + label div {

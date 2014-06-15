@@ -2,6 +2,8 @@
 
 namespace WordPressStanbol;
 
+use WordPressStanbol\Models\EntityType;
+
 class AdminHtml {
 
 	public static function runStanbolButtonHtml() {
@@ -17,6 +19,9 @@ TEXT;
 			<h2>Recognized entities</h2>
 			<p>Select entities to create a link for, then click "Enhance with selected entities":</p>
 			<div id="wordpress-stanbol-entities">
+			<script type="text/javascript">
+				var places = [];
+			</script>
 HTML;
 		$form_value = 0;
 		while ($annotations->valid()) {
@@ -54,10 +59,21 @@ HTML;
 				</div>
 			</label>
 TEXT;
+			if ($entity->get_entity_type() === EntityType::Place) {
+				$content .= <<<MAPS
+					<script type="text/javascript">
+						places.push("{$text->get_text()}");
+					</script>
+MAPS;
+			}
 			$form_value += 1;
 			$annotations->next();
 		}
-		$content .= '</div><br style="clear: both" /><div id="map-canvas"></div>';
+		$content .= <<<END
+		</div>
+		<br style="clear: both" />
+		<div id="map-canvas"></div>
+END;
 		return $content;
 	}
 
