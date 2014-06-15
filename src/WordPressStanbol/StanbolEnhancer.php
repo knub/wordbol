@@ -95,7 +95,7 @@ class StanbolEnhancer {
 				return EntityType::Person;
 			}
 		};
-		return EntityType::Unkown;
+		return EntityType::Unknown;
 	}
 
 	private function build_remote_post_parameters() {

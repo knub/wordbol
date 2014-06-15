@@ -1,7 +1,7 @@
 jQuery(function($) {
 	$("#wordpress-stanbol-entities > label > div").each(function(i, el) {
 		$(el).knubtip("init", {
-			'wait-time': 100,
+			'wait-time': 400,
 			'info-class': '.wordpress-stanbol-entities-info'
 		});
 	});
@@ -12,7 +12,11 @@ jQuery(function($) {
 	places.forEach(function(address) {
 		geocoder.geocode( { 'address': address}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
-				placesLocations.push(results[0].geometry.location);
+				console.log(results[0]);
+				placesLocations.push({
+					'place': results[0].geometry.location,
+					'bounds': results[0].geometry.viewport
+				});
 				if (placesLocations.length === placesCount) {
 					configureMapWithPlaces(placesLocations);
 				}
@@ -44,13 +48,15 @@ function addToMap(address) {
 }
 function configureMapWithPlaces(placesLocations) {
 	var bounds = new google.maps.LatLngBounds();
-	placesLocations.forEach(function(place) {
-		map.setCenter(place);
+	placesLocations.forEach(function(geometry) {
 		var marker = new google.maps.Marker({
 			map: map,
-			position: place
+			position: geometry.place
 		});
-		bounds.extend(place);
+		// Code to center around the markers from here:
+		// http://blog.shamess.info/2009/09/29/zoom-to-fit-all-markers-on-google-maps-api-v3/
+		bounds.extend(geometry.bounds.getNorthEast());
+		bounds.extend(geometry.bounds.getSouthWest());
 	});
 	map.fitBounds (bounds);
 }

@@ -26,6 +26,10 @@ HTML;
 		$form_value = 0;
 		while ($annotations->valid()) {
 			$text = $annotations->current();
+			if (count($annotations->getInfo()) === 0) {
+				$annotations->next();
+				continue;
+			}
 			$entity = $annotations->getInfo()[0];
 			$resource = $entity->get_resource();
 			$type = $entity->get_entity_type();
