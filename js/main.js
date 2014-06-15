@@ -7,25 +7,26 @@ jQuery(function($) {
 	});
 
 	initialize();
-	var placesCount = places.length;
+	var placesNumber = places.length;
+	var placesCount = 0;
 	placesLocations = [];
 	places.forEach(function(address) {
 		geocoder.geocode( { 'address': address}, function(results, status) {
+			placesCount += 1;
 			if (status == google.maps.GeocoderStatus.OK) {
-				console.log(results[0]);
 				placesLocations.push({
 					'place': results[0].geometry.location,
 					'bounds': results[0].geometry.viewport
 				});
-				if (placesLocations.length === placesCount) {
-					configureMapWithPlaces(placesLocations);
-				}
+				console.log("Geocode successful.");
 			} else
-				alert('Geocode was not successful for the following reason: ' + status);
+				console.error('Geocode was not successful for the following reason: ' + status);
+
+			if (placesCount === placesCount) {
+				configureMapWithPlaces(placesLocations);
+			}
 		});
 	});
-	if (places.length > 0)
-		addToMap(places[0]);
 });
 
 var geocoder;
@@ -38,14 +39,6 @@ function initialize() {
 	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 }
 
-function addToMap(address) {
-	geocoder.geocode( { 'address': address}, function(results, status) {
-		if (status == google.maps.GeocoderStatus.OK) {
-		} else {
-			alert('Geocode was not successful for the following reason: ' + status);
-		}
-	});
-}
 function configureMapWithPlaces(placesLocations) {
 	var bounds = new google.maps.LatLngBounds();
 	placesLocations.forEach(function(geometry) {
