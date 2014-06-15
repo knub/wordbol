@@ -63,9 +63,10 @@ function integrate_stanbol_features($post_id) {
 	$integrator = new \WordPressStanbol\PostContentUpdater($content);
 	$annotations = $enhancer->enhance($content)->get_entity_annotations();
 	$annotations_to_be_removed = array();
-	foreach ($annotations as $key) {
-		if (!in_array($annotations[$key][0]->get_resource(), $selected_enhancements))
-			array_push($annotations_to_be_removed, $key);
+	foreach ($annotations as $text) {
+		$entities = $annotations[$text];
+		if (count($entities) > 0 && !in_array($entities[0]->get_resource(), $selected_enhancements))
+			array_push($annotations_to_be_removed, $text);
 	}
 	foreach ($annotations_to_be_removed as $remove) {
 		$annotations->detach($remove);

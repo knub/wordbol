@@ -81,6 +81,7 @@ MAPS;
 		$content .= <<<END
 		</div>
 		<br style="clear: both" />
+		<h2>Overview about places mentioned</h2>
 		<div id="map-canvas"></div>
 END;
 		return $content;

@@ -41,6 +41,8 @@ class PostContentUpdater {
 
 	function integrate_annotation($text, $entity) {
 		// get best fitting resource
+		if (count($entity) === 0)
+			return $this->content;
 		$link = $entity[0]->get_resource();
 		$end = $text->get_end();
 		$content = $this->content;
