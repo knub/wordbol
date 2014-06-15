@@ -6,13 +6,15 @@
 
 	$.fn.knubtip = function (method) {
 		var settings = {
-			'duration'	: 200,
-			'wait-time'	: 1000,
+			'duration'	: 100,
+			'wait-time'	: 100,
+			'mouse-out-time': 200,
 			'info-class': "."
 		};
 
 		// timer will save what setTimeout returns
 		var timer;
+		var mouseOutTimer;
 
 		var methods = {
 			init: function (options) {
@@ -36,12 +38,15 @@
 					$(this).data("knubtip-enabled", true);
 					i += 1;
 
+					var tooltipDivSelector = $(this).data('knubtip')['info'];
+
 					$(this).mousemove(function (event) {
 						// save references, because setTimeout forces context change (this refering to DOMWINDOW then)
 						// $this now refers to the jquerified-element (e. g. li element) for which the tooltip shall be displayed
 						var $this = $(this);
 						var that = this;
 						clearTimeout(timer);
+						clearTimeout(mouseOutTimer);
 						timer = setTimeout(function () {
 							if (that !== event.target)
 								return;
@@ -111,11 +116,18 @@
 							}
 						}, settings['wait-time']);
 					}).mouseout(function () {
-						var tooltipDivSelector = $(this).data('knubtip')['info'];
-						setTimeout(function () {
+						mouseOutTimer = setTimeout(function () {
 							clearTimeout(timer);
 							$(tooltipDivSelector).fadeOut(settings['duration']);
-						}, 1000);
+						}, settings['mouse-out-time']);
+					});
+					$(tooltipDivSelector).mousemove(function() {
+						clearTimeout(mouseOutTimer);
+					}).mouseout(function() {
+						mouseOutTimer = setTimeout(function () {
+							clearTimeout(timer);
+							$(tooltipDivSelector).fadeOut(settings['duration']);
+						}, settings['mouse-out-time']);
 					});
 				});
 			},

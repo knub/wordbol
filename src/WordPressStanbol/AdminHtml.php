@@ -88,6 +88,6 @@ END;
 		$snippet_size = 60;
 		$index_start = strpos($snippet, '<strongxxx>');
 		$index_end = strpos($snippet, '</strongxxx>');
-		return str_replace('</strongxxx>', '</strong>', str_replace('<strongxxx>', '<strong>', substr($snippet, $index_start - $snippet_size, $index_end  + $snippet_size)));
+		return '…' . str_replace('</strongxxx>', '</strong>', str_replace('<strongxxx>', '<strong>', substr($snippet, $index_start - $snippet_size, $index_end  + $snippet_size))) . '…';
 	}
 }
