@@ -23,6 +23,11 @@ TEXT;
 				var places = [];
 			</script>
 HTML;
+		$placeContent = <<<PLACE
+			<h2>Overview about places mentioned</h2>
+			<div id="map-canvas"></div>
+			<br />
+PLACE;
 		$form_value = 0;
 		$already_seen_resources = array();
 		while ($annotations->valid()) {
@@ -69,20 +74,26 @@ HTML;
 			</label>
 TEXT;
 			if ($entity->get_entity_type() === EntityType::Place) {
-				$content .= <<<MAPS
+				$placeContent .= <<<MAPS
 					<script type="text/javascript">
-						places.push("{$text->get_text()}");
+						places.push({
+							address: "{$text->get_text()}",
+							id: "place$form_value"
+						});
 					</script>
+					<input type="checkbox" name="place_location[]" id="place$form_value" value="$resource" checked="checked" />
+					<label for="place$form_value">
+						<div>{$text->get_text()}</div>
+					</label>
 MAPS;
 			}
 			$form_value += 1;
 			$annotations->next();
 		}
 		$content .= <<<END
+			<br style="clear: both" />
+			$placeContent
 		</div>
-		<br style="clear: both" />
-		<h2>Overview about places mentioned</h2>
-		<div id="map-canvas"></div>
 END;
 		return $content;
 	}
@@ -90,15 +101,15 @@ END;
 	private static function get_surrounding_text($text, $post_content) {
 		$snippet_window = 700000000;
 		$snippet_start = max(0, $text->get_start() - $snippet_window);
-		$snippet = substr($post_content, $snippet_start, $snippet_start === 0 ? $text->get_start() : $snippet_window);
-		$snippet .= '<strongxxx>' . substr($post_content, $text->get_start(), $text->length()) . '</strongxxx>';
-		$snippet .= substr($post_content, $text->get_start() + $text->length(), $snippet_window);
+		$snippet = mb_substr($post_content, $snippet_start, $snippet_start === 0 ? $text->get_start() : $snippet_window);
+		$snippet .= '<strongxxx>' . mb_substr($post_content, $text->get_start(), $text->length()) . '</strongxxx>';
+		$snippet .= mb_substr($post_content, $text->get_start() + $text->length(), $snippet_window);
 		$snippet =  strip_tags($snippet, '<strongxxx>');
 
 		$snippet_size = 120;
 		$index_start = max(strpos($snippet, '<strongxxx>') - $snippet_size, 0);
 		$snippet_length = strpos($snippet, '</strongxxx>') - $index_start + $snippet_size;
 //		wp_die("$index_start $index_end");
-		return '…' . str_replace('</strongxxx>', '</strong>', str_replace('<strongxxx>', '<strong>', substr($snippet, $index_start, $snippet_length))) . '…';
+		return '…' . str_replace('</strongxxx>', '</strong>', str_replace('<strongxxx>', '<strong>', mb_substr($snippet, $index_start, $snippet_length))) . '…';
 	}
 }

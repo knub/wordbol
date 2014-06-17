@@ -58,6 +58,11 @@ function integrate_stanbol_features($post_id) {
 		return;
 	$selected_enhancements = $_POST['entity_enhancement'];
 
+	// Add or Update the meta field in the database.
+	if (!update_post_meta ($post_id, 'locations', '', true) ) {
+		add_post_meta($post_id, 'locations', 'banana', true );
+	};
+
 	$content = get_post($post_id)->post_content;
 	remove_action('save_post', 'integrate_stanbol_features');
 	$integrator = new \WordPressStanbol\PostContentUpdater($content);
