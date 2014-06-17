@@ -38,13 +38,27 @@ $enhancer = new WordPressStanbol\StanbolEnhancer();
 add_action('admin_head', function () {
 	wp_enqueue_script('knubtip', '/wp-content/plugins/wordpress-stanbol/js/jquery.knubtip.js', array('jquery'));
 	wp_enqueue_script('google-maps', 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDJAdivC4VOwITwLhtG2Sji4hNFL72fQOY&sensor=false', $in_footxer = false);
+	wp_enqueue_script('wordpress-stanbol-maps', '/wp-content/plugins/wordpress-stanbol/js/maps.js', array('wordpress-stanbol', 'jquery'));
 	wp_enqueue_script('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/js/main.js', array('jquery'));
 	wp_enqueue_style('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/css/main.css');
+});
+add_action('wp_enqueue_scripts', function() {
+	wp_enqueue_script('wordpress-stanbol-maps', '/wp-content/plugins/wordpress-stanbol/js/maps.js', array('wordpress-stanbol'));
 });
 
 
 add_action('post_submitbox_misc_actions', function() {
 	echo \WordPressStanbol\AdminHtml::runStanbolButtonHtml();
+});
+add_filter('the_content', function($content) {
+	$post = $GLOBALS['post'];
+	$id = $post->ID;
+	$json = json_decode(get_post_meta($id, 'locations', true));
+	echo '<pre>';
+	var_dump($json);
+	echo '</pre>';
+	return $content;
+
 });
 add_action('edit_form_after_editor', function($post) use ($enhancer) {
 	$post_content = $post->post_content;
@@ -54,14 +68,26 @@ add_action('edit_form_after_editor', function($post) use ($enhancer) {
 });
 function integrate_stanbol_features($post_id) {
 	global $enhancer;
-	if (!isset($_POST['enhancement']) || !isset($_POST['entity_enhancement']))
+	if (!isset($_POST['enhancement']) || (!isset($_POST['entity_enhancement']) && !isset($_POST['place_location'])))
 		return;
-	$selected_enhancements = $_POST['entity_enhancement'];
+	$selected_enhancements = [];
+	if (isset($_POST['entity_enhancement']))
+		$selected_enhancements = $_POST['entity_enhancement'];
+	$selected_locations = $_POST['place_location'];
+	$locations = [];
+	foreach ($selected_locations as $location) {
+		array_push($locations, json_decode(str_replace("\\", "", $location)));
+	}
+	$locations = json_encode($locations);
+//	echo '<pre>';
+//	var_dump($locations);
+//	echo '</pre>';
 
 	// Add or Update the meta field in the database.
-	if (!update_post_meta ($post_id, 'locations', '', true) ) {
-		add_post_meta($post_id, 'locations', 'banana', true );
+	if (!update_post_meta ($post_id, 'locations', $locations)) {
+		add_post_meta($post_id, 'locations', $locations, true);
 	};
+//	wp_die();
 
 	$content = get_post($post_id)->post_content;
 	remove_action('save_post', 'integrate_stanbol_features');
