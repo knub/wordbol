@@ -16,9 +16,20 @@
 			maps.geocoder.geocode( { 'address': place.address}, function(results, status) {
 				placesCount += 1;
 				if (status == google.maps.GeocoderStatus.OK) {
+					var geometry = results[0].geometry;
 					var location = 	{
-						place: results[0].geometry.location,
-						bounds: results[0].geometry.viewport,
+						place: {
+							lat: geometry.location.lat(),
+							lng: geometry.location.lng()
+						},
+						northEast: {
+							lat: geometry.viewport.getNorthEast().lat(),
+							lng: geometry.viewport.getNorthEast().lng()
+						},
+						southWest: {
+							lat: geometry.viewport.getSouthWest().lat(),
+							lng: geometry.viewport.getSouthWest().lng()
+						},
 						text: place.address
 					};
 					$("#" + place.id).attr("value", JSON.stringify(location));
@@ -35,6 +46,7 @@
 	};
 
 	maps.configureMapWithPlaces = function(placesLocations) {
+		console.log(placesLocations);
 		var bounds = new google.maps.LatLngBounds();
 		placesLocations.forEach(function(geometry) {
 			var infowindow = new google.maps.InfoWindow({
@@ -50,8 +62,8 @@
 			});
 			// Code to center around the markers from here:
 			// http://blog.shamess.info/2009/09/29/zoom-to-fit-all-markers-on-google-maps-api-v3/
-			bounds.extend(geometry.bounds.getNorthEast());
-			bounds.extend(geometry.bounds.getSouthWest());
+			bounds.extend(new google.maps.LatLng(geometry.northEast.lat, geometry.northEast.lng));
+			bounds.extend(new google.maps.LatLng(geometry.southWest.lat, geometry.southWest.lng));
 		});
 		maps.map.fitBounds (bounds);
 	}

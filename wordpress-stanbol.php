@@ -38,12 +38,15 @@ $enhancer = new WordPressStanbol\StanbolEnhancer();
 add_action('admin_head', function () {
 	wp_enqueue_script('knubtip', '/wp-content/plugins/wordpress-stanbol/js/jquery.knubtip.js', array('jquery'));
 	wp_enqueue_script('google-maps', 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDJAdivC4VOwITwLhtG2Sji4hNFL72fQOY&sensor=false', $in_footxer = false);
-	wp_enqueue_script('wordpress-stanbol-maps', '/wp-content/plugins/wordpress-stanbol/js/maps.js', array('wordpress-stanbol', 'jquery'));
-	wp_enqueue_script('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/js/main.js', array('jquery'));
+	wp_enqueue_script('wordpress-stanbol-maps', '/wp-content/plugins/wordpress-stanbol/js/maps.js', array('jquery'));
+	wp_enqueue_script('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/js/admin-main.js', array('jquery'));
 	wp_enqueue_style('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/css/main.css');
 });
 add_action('wp_enqueue_scripts', function() {
-	wp_enqueue_script('wordpress-stanbol-maps', '/wp-content/plugins/wordpress-stanbol/js/maps.js', array('wordpress-stanbol'));
+	wp_enqueue_script('google-maps', 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDJAdivC4VOwITwLhtG2Sji4hNFL72fQOY&sensor=false', $in_footxer = false);
+	wp_enqueue_script('wordpress-stanbol-maps', '/wp-content/plugins/wordpress-stanbol/js/maps.js', array('jquery'));
+	wp_enqueue_script('wordpress-stanbol-main', '/wp-content/plugins/wordpress-stanbol/js/main.js', array('jquery'));
+	wp_enqueue_style('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/css/main.css');
 });
 
 
@@ -53,10 +56,16 @@ add_action('post_submitbox_misc_actions', function() {
 add_filter('the_content', function($content) {
 	$post = $GLOBALS['post'];
 	$id = $post->ID;
-	$json = json_decode(get_post_meta($id, 'locations', true));
+	$json = str_replace("\"", "\\\"", get_post_meta($id, 'locations', true));
 	echo '<pre>';
 	var_dump($json);
 	echo '</pre>';
+	$content .= <<<MAP
+		<div id="map-canvas"></div>
+		<script type="text/javascript">
+			places = JSON.parse("$json");
+		</script>
+MAP;
 	return $content;
 
 });
