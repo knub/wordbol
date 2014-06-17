@@ -72,30 +72,31 @@ MAP;
 add_action('edit_form_after_editor', function($post) use ($enhancer) {
 	$post_content = $post->post_content;
 	$annotations = $enhancer->enhance($post_content)->get_entity_annotations();
-//	$annotations = array();
 	echo \WordPressStanbol\AdminHtml::stanbolSelectionHtml($annotations, $post_content);
 });
 function integrate_stanbol_features($post_id) {
 	global $enhancer;
-	if (!isset($_POST['enhancement']) || (!isset($_POST['entity_enhancement']) && !isset($_POST['place_location'])))
+	if (!isset($_POST['enhancement_button']))
 		return;
 	$selected_enhancements = [];
 	if (isset($_POST['entity_enhancement']))
 		$selected_enhancements = $_POST['entity_enhancement'];
-	$selected_locations = $_POST['place_location'];
+	$selected_locations = [];
+	if (isset($_POST['place_location']))
+		$selected_locations = $_POST['place_location'];
 	$locations = [];
 	foreach ($selected_locations as $location) {
 		array_push($locations, json_decode(str_replace("\\", "", $location)));
 	}
 	$locations = json_encode($locations);
-//	echo '<pre>';
-//	var_dump($locations);
-//	echo '</pre>';
 
 	// Add or Update the meta field in the database.
 	if (!update_post_meta ($post_id, 'locations', $locations)) {
 		add_post_meta($post_id, 'locations', $locations, true);
 	};
+//	echo '<pre>';
+//	var_dump($locations);
+//	echo '</pre>';
 //	wp_die();
 
 	$content = get_post($post_id)->post_content;
