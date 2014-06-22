@@ -6,6 +6,20 @@ jQuery(function($) {
 		});
 	});
 
-	maps.initialize();
-	maps.geocode(places);
+	runStanbol($);
 });
+
+function runStanbol($) {
+	$.ajax({
+		url: ajaxurl,
+		data: {
+			post_id: POST_ID,
+			action: "run_stanbol"
+		},
+		success: function(data) {
+			$("#stanbol_content").html(data);
+			maps.initialize();
+			maps.geocode(places);
+		}
+	});
+}

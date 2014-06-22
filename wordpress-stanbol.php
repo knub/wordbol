@@ -67,9 +67,12 @@ add_filter('the_content', function($content) {
 		</script>
 MAP;
 	return $content;
-
 });
-add_action('edit_form_after_editor', function($post) use ($enhancer) {
+
+add_action('wp_ajax_run_stanbol', function() use ($enhancer) {
+	$id = $_GET['post_id'];
+	$post = get_post($id);
+
 	$post_content = $post->post_content;
 	$annotations = $enhancer->enhance($post_content)->get_entity_annotations();
 
@@ -80,7 +83,19 @@ add_action('edit_form_after_editor', function($post) use ($enhancer) {
 		$selected_locations = json_decode($json);
 	$selected_locations = array_map(function($location) { return $location->resource; }, $selected_locations);
 	echo \WordPressStanbol\AdminHtml::stanbolSelectionHtml($annotations, $post_content, $selected_locations);
+	wp_die();
 });
+
+add_action('edit_form_after_editor', function($post) use ($enhancer) {
+	$id = $post->ID;
+	echo <<<SCRIPT
+		<script type="text/javascript">
+			var POST_ID = $id;
+		</script>
+		<div id="stanbol_content"></div>
+SCRIPT;
+});
+
 function integrate_stanbol_features($post_id) {
 	global $enhancer;
 	if (!isset($_POST['enhancement_button']))

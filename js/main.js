@@ -4,4 +4,5 @@ jQuery(function($) {
 		maps.configureMapWithPlaces(places);
 	else
 		$("#map-canvas").css("display", "none");
+
 });
