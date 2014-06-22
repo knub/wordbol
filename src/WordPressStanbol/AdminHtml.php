@@ -13,7 +13,7 @@ class AdminHtml {
 		</div>
 TEXT;
 	}
-	public static function stanbolSelectionHtml($annotations, $post_content) {
+	public static function stanbolSelectionHtml($annotations, $post_content, $selected_locations) {
 		$annotations->rewind();
 		$content = <<<HTML
 			<h2>Recognized entities</h2>
@@ -74,14 +74,24 @@ PLACE;
 			</label>
 TEXT;
 			if ($entity->get_entity_type() === EntityType::Place) {
-				$placeContent .= <<<MAPS
+				$checked = "";
+				$showPlace = "";
+				if (in_array($resource, $selected_locations)) {
+					$checked = 'checked="checked"';
+					$showPlace = <<<SHOWPLACE
 					<script type="text/javascript">
 						places.push({
 							address: "{$text->get_text()}",
-							id: "place$form_value"
+							id: "place$form_value",
+							resource: "$resource"
+
 						});
 					</script>
-					<input type="checkbox" name="place_location[]" id="place$form_value" value="$resource" checked="checked" />
+SHOWPLACE;
+				}
+				$placeContent .= <<<MAPS
+					$showPlace
+					<input type="checkbox" name="place_location[]" id="place$form_value" value="$resource" $checked />
 					<label for="place$form_value">
 						<div>{$text->get_text()}</div>
 					</label>

@@ -30,7 +30,8 @@
 							lat: geometry.viewport.getSouthWest().lat(),
 							lng: geometry.viewport.getSouthWest().lng()
 						},
-						text: place.address
+						text: place.address,
+						resource: place.resource
 					};
 					$("#" + place.id).attr("value", JSON.stringify(location));
 					placesLocations.push(location);

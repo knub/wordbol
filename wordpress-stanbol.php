@@ -72,7 +72,14 @@ MAP;
 add_action('edit_form_after_editor', function($post) use ($enhancer) {
 	$post_content = $post->post_content;
 	$annotations = $enhancer->enhance($post_content)->get_entity_annotations();
-	echo \WordPressStanbol\AdminHtml::stanbolSelectionHtml($annotations, $post_content);
+
+	$json = get_post_meta($post->ID, 'locations', true);
+	if ($json === "")
+		$selected_locations = array();
+	else
+		$selected_locations = json_decode($json);
+	$selected_locations = array_map(function($location) { return $location->resource; }, $selected_locations);
+	echo \WordPressStanbol\AdminHtml::stanbolSelectionHtml($annotations, $post_content, $selected_locations);
 });
 function integrate_stanbol_features($post_id) {
 	global $enhancer;

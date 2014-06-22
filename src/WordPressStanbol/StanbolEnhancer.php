@@ -85,7 +85,6 @@ class StanbolEnhancer {
 
 	private function determine_entity_type($annotation) {
 		$types = $annotation->allResources('<http://fise.iks-project.eu/ontology/entity-type>');
-		$entity_type = 'ABC';
 
 		foreach ($types as $type) {
 			$uri = $type->getUri();
