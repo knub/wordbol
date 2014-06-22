@@ -88,11 +88,15 @@ add_action('wp_ajax_run_stanbol', function() use ($enhancer) {
 
 add_action('edit_form_after_editor', function($post) use ($enhancer) {
 	$id = $post->ID;
+	$url = plugins_url('css/loader.gif', __FILE__);
 	echo <<<SCRIPT
 		<script type="text/javascript">
 			var POST_ID = $id;
 		</script>
-		<div id="stanbol_content"></div>
+		<div id="stanbol_content">
+			<h2>Loading Stanbol Entities</h2>
+			<img src="$url" alt="Loader" />
+		</div>
 SCRIPT;
 });
 
