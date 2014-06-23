@@ -58,7 +58,7 @@ add_filter('the_content', function($content) {
 	$id = $post->ID;
 	$json = str_replace("\"", "\\\"", get_post_meta($id, 'locations', true));
 	echo '<pre>';
-	var_dump($json);
+	var_dump(json_decode(get_post_meta($id, 'locations', true)));
 	echo '</pre>';
 	$content .= <<<MAP
 		<div id="map-canvas"></div>
@@ -112,7 +112,9 @@ function integrate_stanbol_features($post_id) {
 		$selected_locations = $_POST['place_location'];
 	$locations = [];
 	foreach ($selected_locations as $location) {
-		array_push($locations, json_decode(str_replace("\\", "", $location)));
+		$decoded = json_decode(str_replace("\\", "", $location));
+		if ($decoded != null)
+			array_push($locations, $decoded);
 	}
 	$locations = json_encode($locations);
 

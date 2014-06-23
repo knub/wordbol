@@ -34,7 +34,8 @@
 						resource: place.resource
 					};
 					$("#" + place.id).attr("value", JSON.stringify(location));
-					placesLocations.push(location);
+					if (place.selected)
+						placesLocations.push(location);
 					console.log("Geocode successful.");
 				} else
 					console.error('Geocode was not successful for the following reason: ' + status);

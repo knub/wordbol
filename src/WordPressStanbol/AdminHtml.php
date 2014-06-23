@@ -75,22 +75,20 @@ PLACE;
 TEXT;
 			if ($entity->get_entity_type() === EntityType::Place) {
 				$checked = "";
-				$showPlace = "";
-				if (in_array($resource, $selected_locations)) {
+				$selected = "false";
+				if (in_array($resource, $selected_locations) || count($selected_locations) == 0) {
 					$checked = 'checked="checked"';
-					$showPlace = <<<SHOWPLACE
+					$selected = "true";
+				}
+				$placeContent .= <<<MAPS
 					<script type="text/javascript">
 						places.push({
 							address: "{$text->get_text()}",
 							id: "place$form_value",
-							resource: "$resource"
-
+							resource: "$resource",
+							selected: $selected
 						});
 					</script>
-SHOWPLACE;
-				}
-				$placeContent .= <<<MAPS
-					$showPlace
 					<input type="checkbox" name="place_location[]" id="place$form_value" value="$resource" $checked />
 					<label for="place$form_value">
 						<div>{$text->get_text()}</div>
