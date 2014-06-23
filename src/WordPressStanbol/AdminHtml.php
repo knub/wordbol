@@ -30,6 +30,27 @@ HTML;
 PLACE;
 		$form_value = 0;
 		$already_seen_resources = array();
+		$already_seen_locations = array();
+		$location_resources = array_map(function($location) { return $location->resource; }, $selected_locations);
+
+		foreach ($selected_locations as $location) {
+			array_push($already_seen_locations, $location->resource);
+			$form_value += 1;
+			$placeContent .= <<<MAPS
+				<script type="text/javascript">
+					places.push({
+						address: "{$location->text}",
+						id: "place$form_value",
+						resource: "{$location->resource}",
+						selected: true
+					});
+				</script>
+				<input type="checkbox" name="place_location[]" id="place$form_value" value="$location->resource" checked="checked" />
+				<label for="place$form_value">
+					<div>{$location->text}</div>
+				</label>
+MAPS;
+		}
 		while ($annotations->valid()) {
 			$text = $annotations->current();
 			$entities = $annotations->getInfo();
@@ -73,10 +94,10 @@ PLACE;
 				</div>
 			</label>
 TEXT;
-			if ($entity->get_entity_type() === EntityType::Place) {
+			if ($entity->get_entity_type() === EntityType::Place && !in_array($resource, $already_seen_locations)) {
 				$checked = "";
 				$selected = "false";
-				if (in_array($resource, $selected_locations) || count($selected_locations) == 0) {
+				if (in_array($resource, $location_resources) || count($selected_locations) == 0) {
 					$checked = 'checked="checked"';
 					$selected = "true";
 				}

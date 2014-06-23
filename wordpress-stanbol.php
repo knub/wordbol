@@ -81,7 +81,6 @@ add_action('wp_ajax_run_stanbol', function() use ($enhancer) {
 		$selected_locations = array();
 	else
 		$selected_locations = json_decode($json);
-	$selected_locations = array_map(function($location) { return $location->resource; }, $selected_locations);
 	echo \WordPressStanbol\AdminHtml::stanbolSelectionHtml($annotations, $post_content, $selected_locations);
 	wp_die();
 });
