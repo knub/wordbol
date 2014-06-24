@@ -41,15 +41,15 @@
 				} else
 					console.error('Geocode was not successful for the following reason: ' + status);
 
-				if (placesCount === placesCount) {
+				if (placesCount === placesNumber) {
 					maps.configureMapWithPlaces(placesLocations);
+					console.log(placesLocations);
 				}
 			});
 		});
 	};
 
 	maps.configureMapWithPlaces = function(placesLocations) {
-		console.log(placesLocations);
 		markers.forEach(function(marker) {
 			marker.setMap(null);
 		});

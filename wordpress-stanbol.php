@@ -121,25 +121,27 @@ function integrate_stanbol_features($post_id) {
 	if (!update_post_meta ($post_id, 'locations', $locations)) {
 		add_post_meta($post_id, 'locations', $locations, true);
 	};
-//	echo '<pre>';
-//	var_dump($locations);
-//	echo '</pre>';
-//	wp_die();
 
 	$content = get_post($post_id)->post_content;
 	remove_action('save_post', 'integrate_stanbol_features');
 	$integrator = new \WordPressStanbol\PostContentUpdater($content);
 	$annotations = $enhancer->enhance($content)->get_entity_annotations();
 	$annotations_to_be_removed = array();
+	$tags = array();
 	foreach ($annotations as $text) {
 		$entities = $annotations[$text];
-		if (count($entities) > 0 && !in_array($entities[0]->get_resource(), $selected_enhancements))
-			array_push($annotations_to_be_removed, $text);
+		if (count($entities) > 0) {
+			if (!in_array($entities[0]->get_resource(), $selected_enhancements))
+				array_push($annotations_to_be_removed, $text);
+			else
+				array_push($tags, $text->get_text());
+		}
 	}
 	foreach ($annotations_to_be_removed as $remove) {
 		$annotations->detach($remove);
 	}
 	$content = $integrator->integrate_annotations($annotations);
+	wp_set_post_terms($post_id, $tags);
 	wp_update_post(array('ID' => $post_id, 'post_content' => $content));
 	add_action('save_post', 'integrate_stanbol_features');
 };
