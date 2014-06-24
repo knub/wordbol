@@ -28,7 +28,7 @@ TEXT;
 HTML;
 		$placeContent = <<<PLACE
 			<h2>Overview about places mentioned</h2>
-			<div id="map-canvas"></div>
+			<div id="map-canvas" class="map-canvas"></div>
 			<br />
 PLACE;
 		$form_value = 0;

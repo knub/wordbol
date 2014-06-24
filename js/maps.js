@@ -1,13 +1,15 @@
 (function($) {
 	maps = {};
-	var markers = [];
-	maps.initialize = function() {
+	var allMarkers = {};
+	maps.initialize = function(el) {
 		maps.geocoder = new google.maps.Geocoder();
 		var mapOptions = { };
-		maps.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+		allMarkers[el.id] = [];
+		var map = new google.maps.Map(el, mapOptions);
+		return map;
 	};
 
-	maps.geocode = function(places) {
+	maps.geocode = function(places, map) {
 		var placesNumber = places.length;
 		var placesCount = 0;
 		placesLocations = [];
@@ -40,14 +42,16 @@
 					console.error('Geocode was not successful for the following reason: ' + status);
 
 				if (placesCount === placesNumber) {
-					maps.configureMapWithPlaces(placesLocations);
+					maps.configureMapWithPlaces(placesLocations, map);
 					console.log(placesLocations);
 				}
 			});
 		});
 	};
 
-	maps.configureMapWithPlaces = function(placesLocations) {
+	maps.configureMapWithPlaces = function(placesLocations, map) {
+		var id = map.getDiv().id;
+		var markers = allMarkers[id];
 		markers.forEach(function(marker) {
 			marker.setMap(null);
 		});
@@ -59,19 +63,19 @@
 				content: "<strong>" + geometry.text + "</strong>"
 			});
 			var marker = new google.maps.Marker({
-				map: maps.map,
+				map: map,
 				position: geometry.place,
 				title: geometry.text
 			});
-			markers.push(marker);
+			allMarkers[id].push(marker);
 			google.maps.event.addListener(marker, 'click', function () {
-				infowindow.open(maps.map, marker);
+				infowindow.open(map, marker);
 			});
 			// Code to center around the markers from here:
 			// http://blog.shamess.info/2009/09/29/zoom-to-fit-all-markers-on-google-maps-api-v3/
 			bounds.extend(new google.maps.LatLng(geometry.northEast.lat, geometry.northEast.lng));
 			bounds.extend(new google.maps.LatLng(geometry.southWest.lat, geometry.southWest.lng));
 		});
-		maps.map.fitBounds (bounds);
+		map.fitBounds(bounds);
 	}
 }(jQuery));

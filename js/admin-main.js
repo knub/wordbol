@@ -3,8 +3,8 @@ jQuery(function($) {
 });
 
 function init($) {
-	maps.initialize();
-	maps.geocode(places);
+	var map = maps.initialize(document.getElementById('map-canvas'));
+	maps.geocode(places, map);
 	$("#wordpress-stanbol-entities > label > div").each(function(i, el) {
 		$(el).knubtip("init", {
 			'wait-time': 400,
@@ -20,7 +20,7 @@ function init($) {
 			if (el.resource === resource)
 				el.selected = checked;
 		});
-		maps.configureMapWithPlaces(placesLocations);
+		maps.configureMapWithPlaces(placesLocations, map);
 	});
 }
 

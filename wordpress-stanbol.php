@@ -61,16 +61,24 @@ add_action('wp_enqueue_scripts', function() {
 add_action('post_submitbox_misc_actions', function() {
 	echo \WordPressStanbol\AdminHtml::runStanbolButtonHtml();
 });
+$map_counter = 0;
 add_filter('the_content', function($content) {
+	global $map_counter;
 	$post = $GLOBALS['post'];
 	$id = $post->ID;
 	$json = str_replace("\"", "\\\"", get_post_meta($id, 'locations', true));
 	$content .= <<<MAP
-		<div id="map-canvas"></div>
+		<div id="map-canvas$map_counter" class="map-canvas"></div>
 		<script type="text/javascript">
-			places = JSON.parse("$json");
+			if (typeof(allPlaces) === "undefined") {
+				allPlaces = [];
+			}
+			var json = "$json";
+			if (json.length !== 0)
+				allPlaces.push(JSON.parse(json));
 		</script>
 MAP;
+	$map_counter += 1;
 	return $content;
 });
 
