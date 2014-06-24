@@ -144,7 +144,6 @@ TEXT;
 MAPS;
 			}
 			$form_value += 1;
-			$annotations->next();
 		}
 		$content .= <<<END
 			<br style="clear: both" />

@@ -142,9 +142,6 @@ class StanbolEnhancer {
 			$error_message = $response->get_error_message();
 			throw new \Exception($error_message);
 		} else {
-//			echo '<pre>';
-//			var_dump(htmlentities($response['body']));
-//			echo '</pre>';
 			$graph = new EasyRdf_Graph();
 			$graph->parse($response['body'], 'ntriples');
 			return $graph;
