@@ -9,5 +9,4 @@ function debug_print($v, $die = true) {
 	if ($die)
 		wp_die();
 }
-//define('STANBOL_INSTANCE', 'http://localhost:8080/enhancer/chain/dbpedia-disambiguation');
 ?>

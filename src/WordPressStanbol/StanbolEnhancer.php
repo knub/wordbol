@@ -4,7 +4,7 @@ namespace WordPressStanbol;
 
 use EasyRdf_Graph;
 use WordPressStanbol\Models\EnhancementResult;
-use WordPressStanbol\Models\EntityAnnotationEnhancement;
+use WordPressStanbol\Models\EntityAnnotation;
 use WordPressStanbol\Models\EntityType;
 use WordPressStanbol\Models\LanguageEnhancement;
 use WordPressStanbol\Models\TextAnnotation;
@@ -106,7 +106,7 @@ class StanbolEnhancer {
 
 
 				$confidence = floatval($annotation->getLiteral('<http://fise.iks-project.eu/ontology/confidence>')->getValue());
-				$enhancement_result->add_entity_annotation_for($text_annotation->getUri(), new EntityAnnotationEnhancement($entity_reference, $type, $confidence));
+				$enhancement_result->add_entity_annotation_for($text_annotation->getUri(), new EntityAnnotation($entity_reference, $type, $confidence));
 			});
 		});
 

@@ -10,7 +10,7 @@ function compare_confidences($e1, $e2) {
 		return +1;
 	return 0;
 }
-class TextAnnotationStorage extends \SplObjectStorage {
+class EntityStorage extends \SplObjectStorage {
 	public function getHash($text_annotation) {
 		return $text_annotation->get_name();
 	}
@@ -24,7 +24,7 @@ class EnhancementResult {
 	private $entity_annotations;
 
 	function __construct() {
-		$this->entity_annotations = new TextAnnotationStorage();
+		$this->entity_annotations = new EntityStorage();
 	}
 
 	/**
@@ -55,6 +55,10 @@ class EnhancementResult {
 		$this->resource_info[$resource] = $info;
 	}
 
+	public function get_languages() {
+		return $this->languages;
+
+	}
 	public function get_resource_info($resource) {
 		return $this->resource_info[$resource];
 	}

@@ -3,7 +3,7 @@
 namespace WordPressStanbol\Models;
 
 
-class EntityAnnotationEnhancement extends Enhancement {
+class EntityAnnotation extends Enhancement {
 
 	private $resource;
 	private $entity_type;
