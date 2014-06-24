@@ -121,6 +121,8 @@ class StanbolEnhancer {
 				return EntityType::Place;
 			} else if ($uri === 'http://dbpedia.org/ontology/Person') {
 				return EntityType::Person;
+			} else if ($uri === 'http://schema.org/Organization') {
+				return EntityType::Organization;
 			}
 		};
 		return EntityType::Unknown;
