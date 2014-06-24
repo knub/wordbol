@@ -3,15 +3,24 @@
 namespace WordPressStanbol;
 
 
+/**
+ * This class integrates the given entities into the original content.
+ * It takes care, that no entity is linked twice within the same document.
+ * @package WordPressStanbol
+ */
 class PostContentUpdater {
 
 	private $content;
 	private $offset = 0;
 
 	private $already_seen_resources = array();
+	private $links = array();
 
 	function __construct($content) {
 		$this->content = $content;
+
+		// determine all links so far, so that no link is made twice
+		$this->links = Helper::getLinks($content);
 	}
 
 	/**
@@ -33,7 +42,7 @@ class PostContentUpdater {
 			return $k1->get_start() - $k2->get_start();
 		});
 
-		$this->already_seen_resources = array();
+		$this->already_seen_resources = array_merge(array(), $this->links);
 		foreach ($texts as $text) {
 			$entity = $annotations[$text];
 			$this->content = $this->integrate_annotation($text, $entity);
@@ -47,10 +56,13 @@ class PostContentUpdater {
 			return $this->content;
 		// get best fitting resource --> $entity[0]
 		$resource = $entity[0]->get_resource();
-		if (in_array($resource, $this->already_seen_resources))
-			return $this->content;
-		array_push($this->already_seen_resources, $resource);
+
 		$link = str_replace("dbpedia.org/resource", "en.wikipedia.org/wiki", $resource);
+		// take care, that no resource is linked twice!
+		if (in_array($link, $this->already_seen_resources))
+			return $this->content;
+		array_push($this->already_seen_resources, $link);
+
 		$end = $text->get_end();
 		$content = $this->content;
 		if ($this->already_linked($content, $end))

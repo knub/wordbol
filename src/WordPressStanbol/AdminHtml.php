@@ -30,7 +30,7 @@ HTML;
 			<br />
 PLACE;
 		$form_value = 0;
-		$already_seen_resources = array();
+		$already_seen_resources = array_merge(array(), Helper::getLinks($post_content));
 		$already_seen_locations = array();
 		$location_resources = array_map(function($location) { return $location->resource; }, $selected_locations);
 
@@ -72,10 +72,11 @@ MAPS;
 				continue;
 			$entity = $entities[0];
 			$resource = $entity->get_resource();
-			if (in_array($resource, $already_seen_resources))
+			$wikipedia_resource= str_replace("dbpedia.org/resource", "en.wikipedia.org/wiki", $resource);
+			if (in_array($wikipedia_resource, $already_seen_resources))
 				continue;
 
-			array_push($already_seen_resources, $resource);
+			array_push($already_seen_resources, $wikipedia_resource);
 			$type = $entity->get_entity_type();
 			$surrounding_text = self::get_surrounding_text($text, $post_content);
 			$confidence = round($entity->get_confidence() * 100, 0);
@@ -97,7 +98,6 @@ MAPS;
 DEPIC;
 			}
 
-			$wikipedia_resource= str_replace("dbpedia.org/resource", "en.wikipedia.org/wiki", $resource);
 			$content .= <<<TEXT
 			<input type="checkbox" name="entity_enhancement[]" id="enhancement$form_value" value="$resource" />
 			<label for="enhancement$form_value">
