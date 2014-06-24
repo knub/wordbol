@@ -1,6 +1,8 @@
 ### Wordbol – A wordpress plugin integrating Apache Stanbol
 
-This plugin integrates some of [Apache Stanbol's](https://stanbol.apache.org/) features into your [Wordpress](https://wordpress.org/) blog.
+This plugin integrates some of [Apache Stanbol](https://stanbol.apache.org/)'s features into your [WordPress](https://wordpress.org/) blog.
+
+![Wordbol in Action](https://raw.githubusercontent.com/knub/wordpress-stanbol/master/doc/wordbol.png)
 
 #### Features
 * Generate links to Wikipedia articles automatically
@@ -19,6 +21,7 @@ This plugin integrates some of [Apache Stanbol's](https://stanbol.apache.org/) f
   2. GOOGLE_MAPS_API_KEY to your Google Maps API key (get one at [Google's API console](https://code.google.com/apis/console/))
   3. Have a look at the other settings as well.
 
+---
 #### StanbolEnhancer.php
 
 Apart from being a plugin for WordPress, this project also offers a library, which queries an Apache Stanbol instance from PHP.
