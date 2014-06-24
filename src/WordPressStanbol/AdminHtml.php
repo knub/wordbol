@@ -70,6 +70,7 @@ MAPS;
 
 			$resource_info = $enhancement_result->get_resource_info($resource);
 			$depictions = $resource_info['depictions'];
+			$comment = $resource_info['comment'];
 
 			$depictions_html = '';
 			foreach ($depictions as $depiction) {
@@ -84,6 +85,7 @@ MAPS;
 DEPIC;
 			}
 
+			$wikipedia_resource= str_replace("dbpedia.org/resource", "en.wikipedia.org/wiki", $resource);
 			$content .= <<<TEXT
 			<input type="checkbox" name="entity_enhancement[]" id="enhancement$form_value" value="$resource" />
 			<label for="enhancement$form_value">
@@ -94,7 +96,7 @@ DEPIC;
 							<table class="table table-striped table-hover">
 								<tr>
 									<th>Resource</th>
-									<td><a href="$resource">$resource</a></td>
+									<td><a href="$wikipedia_resource">$wikipedia_resource</a></td>
 								</tr>
 								<tr>
 									<th>Context</th>
@@ -107,6 +109,10 @@ DEPIC;
 								<tr>
 									<th>Entity Type</th>
 									<td>$type</td>
+								</tr>
+								<tr>
+									<th>Comment</th>
+									<td>$comment</td>
 								</tr>
 								$depictions_html
 							</table>

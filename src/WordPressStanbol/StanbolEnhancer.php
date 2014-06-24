@@ -61,9 +61,15 @@ class StanbolEnhancer {
 //			$depictions = $graph->all($resource, "<http://xmlns.com/foaf/0.1/depiction>");
 			$depictions = array($graph->getResource($resource, "<http://xmlns.com/foaf/0.1/depiction>"));
 			$depictions = array_map(function($depiction) { return $depiction->getUri(); }, $depictions);
+
+			$comment = $graph->getLiteral($resource, "<http://www.w3.org/2000/01/rdf-schema#comment>")->getValue();
 			$enhancement_result->add_resource_info($resource, array(
-				"depictions" => $depictions
+				"depictions" => $depictions,
+				"comment" => $comment
 			));
+
+
+
 		}
 	}
 
