@@ -112,7 +112,12 @@ DEPIC;
 								</tr>
 								<tr>
 									<th>Comment</th>
-									<td>$comment</td>
+									<td>
+										<blockquote>
+											$comment
+											<footer>Taken from <cite title="Source Title">Wikipedia</cite></footer>
+										</blockquote>
+									</td>
 								</tr>
 								$depictions_html
 							</table>
@@ -165,6 +170,6 @@ END;
 		$index_start = max(strpos($snippet, '<strongxxx>') - $snippet_size, 0);
 		$snippet_length = strpos($snippet, '</strongxxx>') - $index_start + $snippet_size;
 //		wp_die("$index_start $index_end");
-		return '…' . str_replace('</strongxxx>', '</strong>', str_replace('<strongxxx>', '<strong>', mb_substr($snippet, $index_start, $snippet_length))) . '…';
+		return '… ' . str_replace('</strongxxx>', '</strong>', str_replace('<strongxxx>', '<strong>', mb_substr($snippet, $index_start, $snippet_length))) . ' …';
 	}
 }

@@ -247,3 +247,31 @@ table th[class*="col-"] {
 .table-hover > tbody > tr.danger:hover > th {
 	background-color: #ebcccc;
 }
+
+/*
+ * Blockquote layout taken from Bootstrap
+ * http://getbootstrap.com/
+ */
+blockquote {
+	padding: 10px 20px;
+	margin: 0 0 20px;
+	border-left: 5px solid #eee;
+}
+blockquote p:last-child,
+blockquote ul:last-child,
+blockquote ol:last-child {
+	margin-bottom: 0;
+}
+blockquote footer,
+blockquote small,
+blockquote .small {
+	display: block;
+	font-size: 80%;
+	line-height: 1.42857143;
+	color: #999;
+}
+blockquote footer:before,
+blockquote small:before,
+blockquote .small:before {
+	content: '\2014 \00A0';
+}
