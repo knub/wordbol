@@ -1,10 +1,4 @@
 jQuery(function($) {
-	$("#wordpress-stanbol-entities > label > div").each(function(i, el) {
-		$(el).knubtip("init", {
-			'wait-time': 400,
-			'info-class': '.wordpress-stanbol-entities-info'
-		});
-	});
 
 	runStanbol($);
 });
@@ -21,6 +15,12 @@ function runStanbol($) {
 				$("#stanbol_content").html(data);
 				maps.initialize();
 				maps.geocode(places);
+				$("#wordpress-stanbol-entities > label > div").each(function(i, el) {
+					$(el).knubtip("init", {
+						'wait-time': 400,
+						'info-class': '.wordpress-stanbol-entities-info'
+					});
+				});
 			}
 		});
 	}, 100);
