@@ -6,8 +6,9 @@ This plugin integrates some of [Apache Stanbol](https://stanbol.apache.org/)'s f
 
 #### Features
 * Generate links to Wikipedia articles automatically
-* Auto-generate maps with locations in post
+* Generate maps with locations mentioned in the post
 * Provide useful background information when writing your blog post
+* Auto-tag your posts
 
 #### How to use
 1. Download plugin and copy to your plugin directory (usually this is ```/wp-content/plugins```)
@@ -25,7 +26,7 @@ This plugin integrates some of [Apache Stanbol](https://stanbol.apache.org/)'s f
 #### StanbolEnhancer.php
 
 Apart from being a plugin for WordPress, this project also offers a library, which queries an Apache Stanbol instance from PHP.
-You can use this to access Stanbol from within PHP.
+You can use this to access Stanbol from within PHP. It's MIT licensed.
 
 ##### Usage
 ###### Run enhancer
@@ -47,7 +48,7 @@ This will issue an asynchronous request to your configured Stanbol instance.
 // retrieve language
 $language = $result->get_languages();
 /*
-array(
+$language = array(
   LanguageEnhancement("en", confidence = 100%)
 )
 */
@@ -59,7 +60,7 @@ array(
 // retrieve matched entities
 $entities = $result->get_entity_annotations();
 /*
-EntityStorage(
+$entities = EntityStorage(
   TextAnnotation("Merkel", start = 50, end = 56) =>
     array(
       Entity("http://dbpedia.org/page/Angela_Merkel",
@@ -73,11 +74,18 @@ EntityStorage(
              EntityType::Person, confidence = 100%)
     )
 )
+*/
 ```
 
 ###### Retrieve further information about an entity
 
 ```php
 // retrieve special information about an entity
+$info = $result->get_resource_info("http://dbpedia.org/page/Angela_Merkel");
+/*
+$info = array(
+	"comment" => "Angela Dorothea Merkel,; née Kasner (born 17 July 1954) is the Chancellor of Germany and Chairwoman of the Christian Democratic Union (CDU) [...]",
+  "depiction" => "http://upload.wikimedia.org/wikipedia/commons/2/2e/Angela_Merkel_2_Hamburg.jpg"
+)
 */
 ```
