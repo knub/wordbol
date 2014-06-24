@@ -1,5 +1,6 @@
 (function($) {
 	maps = {};
+	var markers = [];
 	maps.initialize = function() {
 		maps.geocoder = new google.maps.Geocoder();
 		var mapOptions = {
@@ -31,11 +32,11 @@
 							lng: geometry.viewport.getSouthWest().lng()
 						},
 						text: place.address,
-						resource: place.resource
+						resource: place.resource,
+						selected: place.selected
 					};
 					$("#" + place.id).attr("value", JSON.stringify(location));
-					if (place.selected)
-						placesLocations.push(location);
+					placesLocations.push(location);
 					console.log("Geocode successful.");
 				} else
 					console.error('Geocode was not successful for the following reason: ' + status);
@@ -49,8 +50,13 @@
 
 	maps.configureMapWithPlaces = function(placesLocations) {
 		console.log(placesLocations);
+		markers.forEach(function(marker) {
+			marker.setMap(null);
+		});
 		var bounds = new google.maps.LatLngBounds();
 		placesLocations.forEach(function(geometry) {
+			if (!geometry.selected)
+				return;
 			var infowindow = new google.maps.InfoWindow({
 				content: "<strong>" + geometry.text + "</strong>"
 			});
@@ -59,7 +65,8 @@
 				position: geometry.place,
 				title: geometry.text
 			});
-			google.maps.event.addListener(marker, 'click', function() {
+			markers.push(marker);
+			google.maps.event.addListener(marker, 'click', function () {
 				infowindow.open(maps.map, marker);
 			});
 			// Code to center around the markers from here:

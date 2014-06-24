@@ -48,7 +48,7 @@ PLACE;
 				</script>
 				<input type="checkbox" name="place_location[]" id="place$form_value" value="$location->resource" checked="checked" />
 				<label for="place$form_value">
-					<div class="place_location">{$location->text}</div>
+					<div class="place_location" data-location="$location->resource">{$location->text}</div>
 				</label>
 MAPS;
 		}
@@ -144,7 +144,7 @@ TEXT;
 					</script>
 					<input type="checkbox" name="place_location[]" id="place$form_value" value="$resource" $checked />
 					<label for="place$form_value">
-						<div class="place_location">{$text->get_text()}</div>
+						<div class="place_location" data-location="$resource">{$text->get_text()}</div>
 					</label>
 MAPS;
 			}
