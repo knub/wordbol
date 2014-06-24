@@ -5,6 +5,8 @@ namespace WordPressStanbol;
 
 class Helper {
 	public static function getLinks($content) {
+		if ($content == "")
+			return array();
 		$doc = new \DOMDocument();
 		$doc->loadHTML($content);
 		$selector = new \DOMXPath($doc);

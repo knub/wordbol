@@ -15,6 +15,8 @@ TEXT;
 	}
 	public static function stanbolSelectionHtml($enhancement_result, $post_content, $selected_locations) {
 		$annotations = $enhancement_result->get_entity_annotations();
+		if ($annotations->count() == 0)
+			return "";
 		$annotations->rewind();
 		$content = <<<HTML
 			<h2>Recognized entities</h2>
