@@ -74,14 +74,14 @@ add_action('wp_ajax_run_stanbol', function() use ($enhancer) {
 	$post = get_post($id);
 
 	$post_content = $post->post_content;
-	$annotations = $enhancer->enhance($post_content)->get_entity_annotations();
+	$enhancement_result = $enhancer->enhance($post_content);
 
 	$json = get_post_meta($post->ID, 'locations', true);
 	if ($json === "")
 		$selected_locations = array();
 	else
 		$selected_locations = json_decode($json);
-	echo \WordPressStanbol\AdminHtml::stanbolSelectionHtml($annotations, $post_content, $selected_locations);
+	echo \WordPressStanbol\AdminHtml::stanbolSelectionHtml($enhancement_result, $post_content, $selected_locations);
 	wp_die();
 });
 

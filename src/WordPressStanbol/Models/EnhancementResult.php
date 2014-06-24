@@ -56,7 +56,7 @@ class EnhancementResult {
 	}
 
 	public function get_resource_info($resource) {
-		return $this->resource_info($resource);
+		return $this->resource_info[$resource];
 	}
 
 	public function get_entity_annotations() {

@@ -13,7 +13,8 @@ class AdminHtml {
 		</div>
 TEXT;
 	}
-	public static function stanbolSelectionHtml($annotations, $post_content, $selected_locations) {
+	public static function stanbolSelectionHtml($enhancement_result, $post_content, $selected_locations) {
+		$annotations = $enhancement_result->get_entity_annotations();
 		$annotations->rewind();
 		$content = <<<HTML
 			<h2>Recognized entities</h2>
@@ -66,6 +67,23 @@ MAPS;
 			$type = $entity->get_entity_type();
 			$surrounding_text = self::get_surrounding_text($text, $post_content);
 			$confidence = round($entity->get_confidence() * 100, 0);
+
+			$resource_info = $enhancement_result->get_resource_info($resource);
+			$depictions = $resource_info['depictions'];
+
+			$depictions_html = '';
+			foreach ($depictions as $depiction) {
+				$depictions_html .= <<<DEPIC
+				<tr>
+					<td>Image</td>
+					<td>
+						<a href="$depiction">$depiction</a><br />
+						<img src="$depiction" class="depiction" />
+					</td>
+				</tr>
+DEPIC;
+			}
+
 			$content .= <<<TEXT
 			<input type="checkbox" name="entity_enhancement[]" id="enhancement$form_value" value="$resource" />
 			<label for="enhancement$form_value">
@@ -89,6 +107,7 @@ MAPS;
 								<td>Entity Type</td>
 								<td>$type</td>
 							</tr>
+							$depictions_html
 						</table>
 					</div>
 				</div>

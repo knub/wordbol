@@ -62,7 +62,6 @@ class StanbolEnhancer {
 			$enhancement_result->add_resource_info($resource, array(
 				"depictions" => $depictions
 			));
-			debug_print($depictions);
 		}
 	}
 

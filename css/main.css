@@ -51,3 +51,9 @@
 	        user-select: none;
 	-webkit-user-select: none;
 }
+
+img.depiction {
+	height: 200px;
+	max-width: 300px;
+
+}
