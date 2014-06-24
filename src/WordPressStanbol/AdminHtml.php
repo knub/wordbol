@@ -52,10 +52,22 @@ PLACE;
 				</label>
 MAPS;
 		}
+		$sorted_annotations = array();
 		while ($annotations->valid()) {
 			$text = $annotations->current();
 			$entities = $annotations->getInfo();
+			array_push($sorted_annotations, array("text" => $text, "entities" => $entities));
 			$annotations->next();
+		}
+		// Sort annotations by their appeareance in the text (earlier is better).
+		usort($sorted_annotations, function($a1, $a2) {
+			$text1 = $a1['text'];
+			$text2 = $a2['text'];
+			return $text1->get_start() - $text2->get_start();
+		});
+		foreach ($sorted_annotations as $annotation) {
+			$text = $annotation["text"];
+			$entities = $annotation["entities"];
 			if (count($entities) === 0)
 				continue;
 			$entity = $entities[0];

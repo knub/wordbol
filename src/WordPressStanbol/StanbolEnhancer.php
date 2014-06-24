@@ -50,7 +50,6 @@ class StanbolEnhancer {
 		$entity_annotations = $enhancement_result->get_entity_annotations();
 		$entity_annotations->rewind();
 		while ($entity_annotations->valid()) {
-			$text = $entity_annotations->current();
 			$entities = $entity_annotations->getInfo();
 			$entity_annotations->next();
 			if (count($entities) === 0)
