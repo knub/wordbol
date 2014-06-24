@@ -38,9 +38,32 @@ class StanbolEnhancer {
 		$text_annotations = $graph->allOfType('http://fise.iks-project.eu/ontology/TextAnnotation');
 		$this->build_language_result($enhancement_result, $text_annotations);
 		$this->build_text_annotation_result($enhancement_result, $text_annotations);
+
 		$enhancements = $graph->allOfType('http://fise.iks-project.eu/ontology/Enhancement');
 		$this->build_entity_annotation_result($enhancement_result, $enhancements);
+
+		$this->build_resource_info($enhancement_result, $graph);
 		return $enhancement_result;
+	}
+
+	private function build_resource_info($enhancement_result, $graph) {
+		$entity_annotations = $enhancement_result->get_entity_annotations();
+		$entity_annotations->rewind();
+		while ($entity_annotations->valid()) {
+			$text = $entity_annotations->current();
+			$entities = $entity_annotations->getInfo();
+			$entity_annotations->next();
+			if (count($entities) === 0)
+				continue;
+			$entity = $entities[0];
+			$resource = $entity->get_resource();
+			$depictions = $graph->all($resource, "<http://xmlns.com/foaf/0.1/depiction>");
+			$depictions = array_map(function($depiction) { return $depiction->getUri(); }, $depictions);
+			$enhancement_result->add_resource_info($resource, array(
+				"depictions" => $depictions
+			));
+			debug_print($depictions);
+		}
 	}
 
 	private function build_language_result($enhancement_result, $text_annotations) {

@@ -17,7 +17,10 @@ class TextAnnotationStorage extends \SplObjectStorage {
 }
 class EnhancementResult {
 
+	// Stores the languages recognized in the text
 	private $languages = array();
+	// Saves information about resources, as a map from the resource string to an array containing information
+	private $resource_info = array();
 	private $entity_annotations;
 
 	function __construct() {
@@ -48,9 +51,16 @@ class EnhancementResult {
 		$this->entity_annotations[$text_annotation] = $entity_annotations;
 	}
 
+	public function add_resource_info($resource, $info) {
+		$this->resource_info[$resource] = $info;
+	}
+
+	public function get_resource_info($resource) {
+		return $this->resource_info($resource);
+	}
+
 	public function get_entity_annotations() {
-		$clone = $this->entity_annotations;
-		return $clone;
+		return $this->entity_annotations;
 	}
 
 	public function compare_confidences($e1, $e2) {
