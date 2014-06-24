@@ -123,7 +123,6 @@ function integrate_stanbol_features($post_id) {
 	};
 
 	$content = get_post($post_id)->post_content;
-	remove_action('save_post', 'integrate_stanbol_features');
 	$integrator = new \WordPressStanbol\PostContentUpdater($content);
 	$annotations = $enhancer->enhance($content)->get_entity_annotations();
 	$annotations_to_be_removed = array();
@@ -141,9 +140,16 @@ function integrate_stanbol_features($post_id) {
 		$annotations->detach($remove);
 	}
 	$content = $integrator->integrate_annotations($annotations);
-	wp_set_post_terms($post_id, $tags);
+	// remove action to avoid recursion
+	remove_action('save_post', 'integrate_stanbol_features');
 	wp_update_post(array('ID' => $post_id, 'post_content' => $content));
+	// Add action again
 	add_action('save_post', 'integrate_stanbol_features');
+
+	// Set tags
+	$prior_tags = wp_get_post_terms($post_id, 'post_tag', array("fields" => "names"));
+	$tags = array_merge($tags, $prior_tags);
+	wp_set_post_terms($post_id, $tags, 'post_tag');
 };
 add_action('save_post', 'integrate_stanbol_features');
 ?>
