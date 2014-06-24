@@ -48,7 +48,7 @@ PLACE;
 				</script>
 				<input type="checkbox" name="place_location[]" id="place$form_value" value="$location->resource" checked="checked" />
 				<label for="place$form_value">
-					<div>{$location->text}</div>
+					<div class="place_location">{$location->text}</div>
 				</label>
 MAPS;
 		}
@@ -144,7 +144,7 @@ TEXT;
 					</script>
 					<input type="checkbox" name="place_location[]" id="place$form_value" value="$resource" $checked />
 					<label for="place$form_value">
-						<div>{$text->get_text()}</div>
+						<div class="place_location">{$text->get_text()}</div>
 					</label>
 MAPS;
 			}
@@ -162,14 +162,14 @@ END;
 		$snippet_window = 700000000;
 		$snippet_start = max(0, $text->get_start() - $snippet_window);
 		$snippet = mb_substr($post_content, $snippet_start, $snippet_start === 0 ? $text->get_start() : $snippet_window);
-		$snippet .= '<strongxxx>' . mb_substr($post_content, $text->get_start(), $text->length()) . '</strongxxx>';
+		$snippet .= '<SNIPPETMARKER>' . mb_substr($post_content, $text->get_start(), $text->length()) . '</SNIPPETMARKER>';
 		$snippet .= mb_substr($post_content, $text->get_start() + $text->length(), $snippet_window);
-		$snippet =  strip_tags($snippet, '<strongxxx>');
+		$snippet =  strip_tags($snippet, '<SNIPPETMARKER>');
 
 		$snippet_size = 120;
-		$index_start = max(strpos($snippet, '<strongxxx>') - $snippet_size, 0);
-		$snippet_length = strpos($snippet, '</strongxxx>') - $index_start + $snippet_size;
+		$index_start = max(strpos($snippet, '<SNIPPETMARKER>') - $snippet_size, 0);
+		$snippet_length = strpos($snippet, '</SNIPPETMARKER>') - $index_start + $snippet_size;
 //		wp_die("$index_start $index_end");
-		return '… ' . str_replace('</strongxxx>', '</strong>', str_replace('<strongxxx>', '<strong>', mb_substr($snippet, $index_start, $snippet_length))) . ' …';
+		return '… ' . str_replace('</SNIPPETMARKER>', '</strong>', str_replace('<SNIPPETMARKER>', '<strong>', mb_substr($snippet, $index_start, $snippet_length))) . ' …';
 	}
 }
