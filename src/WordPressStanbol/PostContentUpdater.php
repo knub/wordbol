@@ -65,8 +65,6 @@ class PostContentUpdater {
 
 		$end = $text->get_end();
 		$content = $this->content;
-		if ($this->already_linked($content, $end))
-			return $content;
 		$string_beginning = "<a href='$link'>";
 		$string_end = '</a>';
 		$content = substr_replace($content, $string_end, $end + $this->offset, 0);
@@ -74,24 +72,4 @@ class PostContentUpdater {
 		$this->offset += strlen($string_beginning) + strlen($string_end);
 		return $content;
 	}
-
-	/**
-	 * Checks whether the found entity is already linked. It does so by checking what comes first
-	 * after the entity text: a closing link '</a>' or an opening '<a '. In the former case, the entity
-	 * is already linked, in the latter, it isn't.
-	 * @param $content string The text.
-	 * @param $end int The offset in the text where the entity is found.
-	 * @return bool True, if the entity is already linked, false otherwise.
-	 */
-	function already_linked($content, $end) {
-		$link_end_occurrence   = strpos($content, '</a>', $end);
-		$link_start_occurrence = strpos($content, '<a ', $end);
-		if ($link_end_occurrence === false)
-			return false;
-		if ($link_start_occurrence === false)
-			return true;
-		return $link_end_occurrence - $link_start_occurrence < 0;
-
-	}
-
-} 
+}
