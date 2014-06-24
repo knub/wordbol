@@ -59,7 +59,7 @@
 		placesLocations.forEach(function(geometry) {
 			if (!geometry.selected)
 				return;
-			var infowindow = new google.maps.InfoWindow({
+			var infoWindow = new google.maps.InfoWindow({
 				content: "<strong>" + geometry.text + "</strong>"
 			});
 			var marker = new google.maps.Marker({
@@ -69,7 +69,7 @@
 			});
 			allMarkers[id].push(marker);
 			google.maps.event.addListener(marker, 'click', function () {
-				infowindow.open(map, marker);
+				infoWindow.open(map, marker);
 			});
 			// Code to center around the markers from here:
 			// http://blog.shamess.info/2009/09/29/zoom-to-fit-all-markers-on-google-maps-api-v3/
