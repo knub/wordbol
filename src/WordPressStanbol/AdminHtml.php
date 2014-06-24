@@ -75,7 +75,7 @@ MAPS;
 			foreach ($depictions as $depiction) {
 				$depictions_html .= <<<DEPIC
 				<tr>
-					<td>Image</td>
+					<th>Image</th>
 					<td>
 						<a href="$depiction">$depiction</a><br />
 						<img src="$depiction" class="depiction" />
@@ -90,25 +90,27 @@ DEPIC;
 				<div>
 					{$text->get_text()}
 					<div class="wordpress-stanbol-entities-info">
-						<table>
-							<tr>
-								<td>Resource</td>
-								<td><a href="$resource">$resource</a></td>
-							</tr>
-							<tr>
-								<td>Context</td>
-								<td>$surrounding_text</td>
-							</tr>
-							<tr>
-								<td>Confidence</td>
-								<td>$confidence %</td>
-							</tr>
-							<tr>
-								<td>Entity Type</td>
-								<td>$type</td>
-							</tr>
-							$depictions_html
-						</table>
+						<tbody>
+							<table class="table table-striped table-hover">
+								<tr>
+									<th>Resource</th>
+									<td><a href="$resource">$resource</a></td>
+								</tr>
+								<tr>
+									<th>Context</th>
+									<td>$surrounding_text</td>
+								</tr>
+								<tr>
+									<th>Confidence</th>
+									<td>$confidence %</td>
+								</tr>
+								<tr>
+									<th>Entity Type</th>
+									<td>$type</td>
+								</tr>
+								$depictions_html
+							</table>
+						</tbody>
 					</div>
 				</div>
 			</label>

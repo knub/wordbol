@@ -57,7 +57,9 @@ class StanbolEnhancer {
 				continue;
 			$entity = $entities[0];
 			$resource = $entity->get_resource();
-			$depictions = $graph->all($resource, "<http://xmlns.com/foaf/0.1/depiction>");
+			// TODO/INFO: Taking only the first element so far. The first and second are almost always the same.
+//			$depictions = $graph->all($resource, "<http://xmlns.com/foaf/0.1/depiction>");
+			$depictions = array($graph->getResource($resource, "<http://xmlns.com/foaf/0.1/depiction>"));
 			$depictions = array_map(function($depiction) { return $depiction->getUri(); }, $depictions);
 			$enhancement_result->add_resource_info($resource, array(
 				"depictions" => $depictions
