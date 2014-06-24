@@ -67,8 +67,8 @@ class PostContentUpdater {
 		$content = $this->content;
 		if ($this->already_linked($content, $end))
 			return $content;
-		$string_end = '</a>';
 		$string_beginning = "<a href='$link'>";
+		$string_end = '</a>';
 		$content = substr_replace($content, $string_end, $end + $this->offset, 0);
 		$content = substr_replace($content, $string_beginning, $text->get_start() + $this->offset, 0);
 		$this->offset += strlen($string_beginning) + strlen($string_end);

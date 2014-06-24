@@ -66,9 +66,6 @@ class StanbolEnhancer {
 				"depictions" => $depictions,
 				"comment" => $comment
 			));
-
-
-
 		}
 	}
 
@@ -103,7 +100,6 @@ class StanbolEnhancer {
 			array_walk($text_annotations, function($text_annotation) use ($annotation, $enhancement_result) {
 				$entity_reference = $annotation->getResource('<http://fise.iks-project.eu/ontology/entity-reference>')->getUri();
 				$type = $this->determine_entity_type($annotation);
-
 
 				$confidence = floatval($annotation->getLiteral('<http://fise.iks-project.eu/ontology/confidence>')->getValue());
 				$enhancement_result->add_entity_annotation_for($text_annotation->getUri(), new EntityAnnotation($entity_reference, $type, $confidence));

@@ -3,9 +3,7 @@
 	var markers = [];
 	maps.initialize = function() {
 		maps.geocoder = new google.maps.Geocoder();
-		var mapOptions = {
-			zoom: 2
-		};
+		var mapOptions = { };
 		maps.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 	};
 
@@ -76,5 +74,4 @@
 		});
 		maps.map.fitBounds (bounds);
 	}
-
 }(jQuery));

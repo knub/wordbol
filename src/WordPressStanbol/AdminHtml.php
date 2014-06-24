@@ -71,6 +71,8 @@ MAPS;
 			if (count($entities) === 0)
 				continue;
 			$entity = $entities[0];
+			if ($entity->get_confidence() < MINIMUM_CONFIDENCE)
+				continue;
 			$resource = $entity->get_resource();
 			$wikipedia_resource= str_replace("dbpedia.org/resource", "en.wikipedia.org/wiki", $resource);
 			if (in_array($wikipedia_resource, $already_seen_resources))
@@ -175,17 +177,15 @@ END;
 	}
 
 	private static function get_surrounding_text($text, $post_content) {
-		$snippet_window = 700000000;
+		$snippet_window = 999999999;
 		$snippet_start = max(0, $text->get_start() - $snippet_window);
 		$snippet = mb_substr($post_content, $snippet_start, $snippet_start === 0 ? $text->get_start() : $snippet_window);
 		$snippet .= '<SNIPPETMARKER>' . mb_substr($post_content, $text->get_start(), $text->length()) . '</SNIPPETMARKER>';
 		$snippet .= mb_substr($post_content, $text->get_start() + $text->length(), $snippet_window);
 		$snippet =  strip_tags($snippet, '<SNIPPETMARKER>');
 
-		$snippet_size = 120;
-		$index_start = max(strpos($snippet, '<SNIPPETMARKER>') - $snippet_size, 0);
-		$snippet_length = strpos($snippet, '</SNIPPETMARKER>') - $index_start + $snippet_size;
-//		wp_die("$index_start $index_end");
+		$index_start = max(strpos($snippet, '<SNIPPETMARKER>') - SNIPPET_SIZE, 0);
+		$snippet_length = strpos($snippet, '</SNIPPETMARKER>') - $index_start + SNIPPET_SIZE;
 		return '… ' . str_replace('</SNIPPETMARKER>', '</strong>', str_replace('<SNIPPETMARKER>', '<strong>', mb_substr($snippet, $index_start, $snippet_length))) . ' …';
 	}
 }

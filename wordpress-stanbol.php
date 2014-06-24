@@ -34,21 +34,29 @@ error_reporting(E_ALL);
 require_once 'config.php';
 require 'vendor/autoload.php';
 
+function debug_print($v, $die = true) {
+	echo '<pre>';
+	var_dump($v);
+	echo '</pre>';
+	if ($die)
+		wp_die();
+}
+
 $enhancer = new WordPressStanbol\StanbolEnhancer();
 add_action('admin_head', function () {
 	wp_enqueue_script('knubtip', '/wp-content/plugins/wordpress-stanbol/js/jquery.knubtip.js', array('jquery'));
-	wp_enqueue_script('google-maps', 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDJAdivC4VOwITwLhtG2Sji4hNFL72fQOY&sensor=false', $in_footxer = false);
+	// yes, you have to do this duplicated code
+	wp_enqueue_script('google-maps', 'http://maps.googleapis.com/maps/api/js?key=' . GOOGLE_MAPS_API_KEY . '&sensor=false');
 	wp_enqueue_script('wordpress-stanbol-maps', '/wp-content/plugins/wordpress-stanbol/js/maps.js', array('jquery'));
 	wp_enqueue_script('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/js/admin-main.js', array('jquery'));
 	wp_enqueue_style('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/css/main.css');
 });
 add_action('wp_enqueue_scripts', function() {
-	wp_enqueue_script('google-maps', 'http://maps.googleapis.com/maps/api/js?key=AIzaSyDJAdivC4VOwITwLhtG2Sji4hNFL72fQOY&sensor=false', $in_footxer = false);
+	wp_enqueue_script('google-maps', 'http://maps.googleapis.com/maps/api/js?key=' . GOOGLE_MAPS_API_KEY . '&sensor=false');
 	wp_enqueue_script('wordpress-stanbol-maps', '/wp-content/plugins/wordpress-stanbol/js/maps.js', array('jquery'));
 	wp_enqueue_script('wordpress-stanbol-main', '/wp-content/plugins/wordpress-stanbol/js/main.js', array('jquery'));
 	wp_enqueue_style('wordpress-stanbol', '/wp-content/plugins/wordpress-stanbol/css/main.css');
 });
-
 
 add_action('post_submitbox_misc_actions', function() {
 	echo \WordPressStanbol\AdminHtml::runStanbolButtonHtml();
@@ -57,9 +65,6 @@ add_filter('the_content', function($content) {
 	$post = $GLOBALS['post'];
 	$id = $post->ID;
 	$json = str_replace("\"", "\\\"", get_post_meta($id, 'locations', true));
-	echo '<pre>';
-	var_dump(json_decode(get_post_meta($id, 'locations', true)));
-	echo '</pre>';
 	$content .= <<<MAP
 		<div id="map-canvas"></div>
 		<script type="text/javascript">
@@ -117,7 +122,7 @@ function integrate_stanbol_features($post_id) {
 	}
 	$locations = json_encode($locations);
 
-	// Add or Update the meta field in the database.
+	// Add or Update the location field in the database.
 	if (!update_post_meta ($post_id, 'locations', $locations)) {
 		add_post_meta($post_id, 'locations', $locations, true);
 	};
@@ -147,9 +152,11 @@ function integrate_stanbol_features($post_id) {
 	add_action('save_post', 'integrate_stanbol_features');
 
 	// Set tags
-	$prior_tags = wp_get_post_terms($post_id, 'post_tag', array("fields" => "names"));
-	$tags = array_merge($tags, $prior_tags);
-	wp_set_post_terms($post_id, $tags, 'post_tag');
+	if (AUTO_TAG) {
+		$prior_tags = wp_get_post_terms($post_id, 'post_tag', array("fields" => "names"));
+		$tags = array_merge($tags, $prior_tags);
+		wp_set_post_terms($post_id, $tags, 'post_tag');
+	}
 };
 add_action('save_post', 'integrate_stanbol_features');
 ?>
