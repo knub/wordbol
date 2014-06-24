@@ -112,7 +112,11 @@ DEPIC;
 								</tr>
 								<tr>
 									<th>Context</th>
-									<td>$surrounding_text</td>
+									<td>
+										<blockquote>
+											$surrounding_text
+										</blockquote>
+									</td>
 								</tr>
 								<tr>
 									<th>Confidence</th>

@@ -8,6 +8,8 @@ class PostContentUpdater {
 	private $content;
 	private $offset = 0;
 
+	private $already_seen_resources = array();
+
 	function __construct($content) {
 		$this->content = $content;
 	}
@@ -21,29 +23,34 @@ class PostContentUpdater {
 		// first, we need to sort the keys array, because we have to insert the links in ascending order to make
 		// calculating the offset easier.
 		$annotations->rewind();
-		$keys = array();
+		$texts = array();
 		while ($annotations->valid()) {
-			$key = $annotations->current();
-			array_push($keys, $key);
+			$text = $annotations->current();
+			array_push($texts, $text);
 			$annotations->next();
 		}
-		usort($keys, function($k1, $k2) {
+		usort($texts, function($k1, $k2) {
 			return $k1->get_start() - $k2->get_start();
 		});
 
-		foreach ($keys as $key) {
-			$entity = $annotations[$key];
-			$this->content = $this->integrate_annotation($key, $entity);
+		$this->already_seen_resources = array();
+		foreach ($texts as $text) {
+			$entity = $annotations[$text];
+			$this->content = $this->integrate_annotation($text, $entity);
 		}
 
 		return $this->content;
 	}
 
 	function integrate_annotation($text, $entity) {
-		// get best fitting resource
 		if (count($entity) === 0)
 			return $this->content;
-		$link = str_replace("dbpedia.org/resource", "en.wikipedia.org/wiki", $entity[0]->get_resource());
+		// get best fitting resource --> $entity[0]
+		$resource = $entity[0]->get_resource();
+		if (in_array($resource, $this->already_seen_resources))
+			return $this->content;
+		array_push($this->already_seen_resources, $resource);
+		$link = str_replace("dbpedia.org/resource", "en.wikipedia.org/wiki", $resource);
 		$end = $text->get_end();
 		$content = $this->content;
 		if ($this->already_linked($content, $end))
