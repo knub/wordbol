@@ -1,6 +1,6 @@
 <?php
 // define the http endpoint of the stanbol instance
-define('STANBOL_INSTANCE', 'http://localhost:8080/enhancer/');
+define('STANBOL_INSTANCE', 'http://localhost:8080/enhancer/chain/wordpress-chain');
 // define the http endpoint of the stanbol instance
 define('GOOGLE_MAPS_API_KEY', 'AIzaSyDJAdivC4VOwITwLhtG2Sji4hNFL72fQOY');
 // The minimum confidence for a matched entity to be shown (value in [0..1])
