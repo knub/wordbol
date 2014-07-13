@@ -11,7 +11,7 @@
 
 #wordpress-stanbol-entities label div {
 	background: lightgrey;
-	width: 300px;
+	min-width: 220px;
 	height: 50px;
 	line-height: 50px;
 	color: black;
@@ -41,8 +41,8 @@
 }
 
 .map-canvas {
-	height: 400px;
-	width: 600px;
+	height: 350px;
+	width: 500px;
 }
 
 #wordpress-stanbol-entities input[type=checkbox]:checked + label div {

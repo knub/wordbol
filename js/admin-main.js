@@ -7,7 +7,7 @@ function init($) {
 	maps.geocode(places, map);
 	$("#wordpress-stanbol-entities > label > div").each(function(i, el) {
 		$(el).knubtip("init", {
-			'wait-time': 400,
+			'wait-time': 1000,
 			'info-class': '.wordpress-stanbol-entities-info'
 		});
 	});
