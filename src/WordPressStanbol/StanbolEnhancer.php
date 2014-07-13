@@ -88,7 +88,8 @@ class StanbolEnhancer {
 			$start = intval($annotation->getLiteral('<http://fise.iks-project.eu/ontology/start>')->getValue());
 			$end   = intval($annotation->getLiteral('<http://fise.iks-project.eu/ontology/end>')->getValue());
 			$text  = $annotation->getLiteral('<http://fise.iks-project.eu/ontology/selected-text>')->getValue();
-			$enhancement_result->add_text_annotation(new TextAnnotation($name, $start, $end, $text));
+			$confidence = floatval($annotation->getLiteral('<http://fise.iks-project.eu/ontology/confidence>')->getValue());
+			$enhancement_result->add_text_annotation(new TextAnnotation($name, $confidence, $start, $end, $text));
 		});
 	}
 

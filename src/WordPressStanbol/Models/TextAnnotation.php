@@ -2,7 +2,7 @@
 
 namespace WordPressStanbol\Models;
 
-class TextAnnotation {
+class TextAnnotation extends Enhancement {
 	private $name;
 
 	private $start;
@@ -12,15 +12,17 @@ class TextAnnotation {
 	/**
 	 * Constructs a new text-annotation.
 	 * @param $name string The resource of the annotation, e.g. 'urn:enhancement-0df2ab8a-07d2-0da6-31e6-6a02857af3ca'
+	 * @param $confidence float The confidence.
 	 * @param $start int The start of the text annotation.
 	 * @param $end int The end of the text annotation.
 	 * @param $text string The text of the annotatoin.
 	 */
-	function __construct($name, $start = null, $end = null, $text = null) {
+	function __construct($name, $confidence = null, $start = null, $end = null, $text = null) {
 		$this->name = $name;
 		$this->start = $start;
 		$this->end   = $end;
 		$this->text  = $text;
+		parent::__construct($confidence);
 	}
 
 

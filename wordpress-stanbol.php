@@ -143,10 +143,14 @@ function integrate_stanbol_features($post_id) {
 	foreach ($annotations as $text) {
 		$entities = $annotations[$text];
 		if (count($entities) > 0) {
-			if (!in_array($entities[0]->get_resource(), $selected_enhancements))
+			$entity = $entities[0];
+			if (!in_array($entity->get_resource(), $selected_enhancements))
 				array_push($annotations_to_be_removed, $text);
-			else
-				array_push($tags, $text->get_text());
+			else {
+				if ($text->get_confidence() > MINIMUM_CONFIDENCE) {
+					array_push($tags, $text->get_text());
+				}
+			}
 		}
 	}
 	foreach ($annotations_to_be_removed as $remove) {
