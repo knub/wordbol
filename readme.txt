@@ -7,6 +7,3 @@ License URI: http://opensource.org/licenses/MIT
 
 Integration of Apache Stanbol in WordPress.
 Enhance your articles with semantic information.
-
-Concrete features include:
-- tbd
