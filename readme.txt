@@ -1,4 +1,4 @@
-=== wordpress-stanbol ===
+=== wordbol ===
 Tags: apache stanbol,stanbol,semantic lifting,semantic enhancement
 Requires at least: 3.9
 Tested up to: 3.9
