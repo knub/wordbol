@@ -1,5 +1,5 @@
 {
-	"name": "knub/wordpress-stanbol",
+	"name": "knub/wordbol",
 	"type": "wordpress-plugin",
 	"description": "A stanbol plugin for Stanbol.",
 	"require": {
@@ -14,7 +14,7 @@
 	],
 	"autoload": {
 		"psr-0": {
-			"WordPressStanbol": "src/"
+			"Wordbol": "src/"
 		}
 	},
 	"minimum-stability": "stable"

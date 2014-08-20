@@ -1,6 +1,6 @@
 <?php
 
-namespace WordPressStanbol\Models;
+namespace Wordbol\Models;
 
 
 class EntityAnnotation extends Enhancement {
@@ -22,7 +22,7 @@ class EntityAnnotation extends Enhancement {
 	}
 
 	/**
-	 * @return WordPressStanbol\Models\EntityType The type of this resource, e.g. EntityType::Person.
+	 * @return Wordbol\Models\EntityType The type of this resource, e.g. EntityType::Person.
 	 */
 	public function get_entity_type() {
 		return $this->entity_type;

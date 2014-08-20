@@ -1,6 +1,6 @@
 <?php
 
-namespace WordPressStanbol;
+namespace Wordbol;
 
 
 class Helper {

@@ -1,8 +1,8 @@
 <?php
 
-namespace WordPressStanbol;
+namespace Wordbol;
 
-use WordPressStanbol\Models\EntityType;
+use Wordbol\Models\EntityType;
 
 class AdminHtml {
 
@@ -21,7 +21,7 @@ TEXT;
 		$content = <<<HTML
 			<h2>Recognized entities</h2>
 			<p>Select entities to create a link for, then click "Enhance with selected entities":</p>
-			<div id="wordpress-stanbol-entities">
+			<div id="wordbol-entities">
 			<script type="text/javascript">
 				var places = [];
 			</script>
@@ -107,7 +107,7 @@ DEPIC;
 			<label for="enhancement$form_value">
 				<div>
 					{$text->get_text()}
-					<div class="wordpress-stanbol-entities-info">
+					<div class="wordbol-entities-info">
 						<tbody>
 							<table class="table table-striped table-hover">
 								<tr>

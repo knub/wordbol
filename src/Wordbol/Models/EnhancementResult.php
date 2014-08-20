@@ -1,6 +1,6 @@
 <?php
 
-namespace WordPressStanbol\Models;
+namespace Wordbol\Models;
 
 function compare_confidences($e1, $e2) {
 	$v = $e2->get_confidence() - $e1->get_confidence();

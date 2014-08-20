@@ -1,12 +1,12 @@
 <?php
 
-namespace WordPressStanbol;
+namespace Wordbol;
 
 
 /**
  * This class integrates the given entities into the original content.
  * It takes care, that no entity is linked twice within the same document.
- * @package WordPressStanbol
+ * @package Wordbol
  */
 class PostContentUpdater {
 

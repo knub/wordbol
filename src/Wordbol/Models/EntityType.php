@@ -1,6 +1,6 @@
 <?php
 
-namespace WordPressStanbol\Models;
+namespace Wordbol\Models;
 
 
 abstract class EntityType {

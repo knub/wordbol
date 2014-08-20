@@ -2,7 +2,7 @@
 
 This plugin integrates some of [Apache Stanbol](https://stanbol.apache.org/)'s features into your [WordPress](https://wordpress.org/) blog.
 
-![Wordbol in Action](https://raw.githubusercontent.com/knub/wordpress-stanbol/master/doc/wordbol.png)
+![Wordbol in Action](https://raw.githubusercontent.com/knub/wordbol/master/doc/wordbol.png)
 
 #### Features
 * Generate links to Wikipedia articles automatically
@@ -36,7 +36,7 @@ $text = "The Stanbol enhancer can detect famous cities such as Paris " +
         "and people such as Bob Marley.";
 
 // enhance text
-$enhancer = new WordPressStanbol\Enhancer();
+$enhancer = new Wordbol\Enhancer();
 $result   = $enhancer->enhance($text);
 ```
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace WordPressStanbol\Models;
+namespace Wordbol\Models;
 
 class TextAnnotation extends Enhancement {
 	private $name;

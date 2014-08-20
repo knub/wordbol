@@ -1,13 +1,13 @@
 <?php
 
-namespace WordPressStanbol;
+namespace Wordbol;
 
 use EasyRdf_Graph;
-use WordPressStanbol\Models\EnhancementResult;
-use WordPressStanbol\Models\EntityAnnotation;
-use WordPressStanbol\Models\EntityType;
-use WordPressStanbol\Models\LanguageEnhancement;
-use WordPressStanbol\Models\TextAnnotation;
+use Wordbol\Models\EnhancementResult;
+use Wordbol\Models\EntityAnnotation;
+use Wordbol\Models\EntityType;
+use Wordbol\Models\LanguageEnhancement;
+use Wordbol\Models\TextAnnotation;
 
 /**
  * This class enhances a given text semantically using Apache Stanbol.

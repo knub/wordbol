@@ -1,10 +1,10 @@
 <?php
 
-namespace WordPressStanbol\Models;
+namespace Wordbol\Models;
 
 /**
  * A language enhancement declares the language of a given text.
- * @package WordPressStanbol\Models
+ * @package Wordbol\Models
  */
 class LanguageEnhancement extends Enhancement {
 

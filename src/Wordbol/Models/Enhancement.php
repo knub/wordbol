@@ -1,10 +1,10 @@
 <?php
-namespace WordPressStanbol\Models;
+namespace Wordbol\Models;
 /**
  * Base class for all kinds of enhancements.
  * See https://stanbol.apache.org/docs/trunk/components/enhancer/enhancementstructure for details on Stanbol's
  * enhancements.
- * @package WordPressStanbol\Models
+ * @package Wordbol\Models
  */
 class Enhancement {
 	private $confidence;

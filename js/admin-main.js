@@ -5,10 +5,10 @@ jQuery(function($) {
 function init($) {
 	var map = maps.initialize(document.getElementById('map-canvas'));
 	maps.geocode(places, map);
-	$("#wordpress-stanbol-entities > label > div").each(function(i, el) {
+	$("#wordbol-entities > label > div").each(function(i, el) {
 		$(el).knubtip("init", {
 			'wait-time': 1000,
-			'info-class': '.wordpress-stanbol-entities-info'
+			'info-class': '.wordbol-entities-info'
 		});
 	});
 	$(".place_location").click(function(e) {

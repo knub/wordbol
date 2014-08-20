@@ -1,15 +1,15 @@
-#wordpress-stanbol-entities input[] {
+#wordbol-entities input[] {
 }
-#wordpress-stanbol-entities input[type=checkbox] {
+#wordbol-entities input[type=checkbox] {
 	display: none;
 	float: left;
 }
 
-#wordpress-stanbol-entities a {
+#wordbol-entities a {
 	color: black;
 }
 
-#wordpress-stanbol-entities label div {
+#wordbol-entities label div {
 	background: lightgrey;
 	min-width: 220px;
 	height: 50px;
@@ -18,7 +18,7 @@
 	text-align: center;
 }
 
-.wordpress-stanbol-entities-info {
+.wordbol-entities-info {
 	display: none;
 	max-width: 700px;
 	z-index: 99999999;
@@ -33,7 +33,7 @@
 
 	background: white;
 }
-#wordpress-stanbol-entities label {
+#wordbol-entities label {
 	float: left;
 	display: block;
 	margin-right: 10px;
@@ -45,7 +45,7 @@
 	width: 500px;
 }
 
-#wordpress-stanbol-entities input[type=checkbox]:checked + label div {
+#wordbol-entities input[type=checkbox]:checked + label div {
 	background: seagreen;
 	 -khtml-user-select: none;
 	   -moz-user-select: none;
