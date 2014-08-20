@@ -171,5 +171,3 @@ function integrate_stanbol_features($post_id) {
 	}
 };
 add_action('save_post', 'integrate_stanbol_features');
-?>
-

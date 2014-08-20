@@ -9,4 +9,3 @@ define('MINIMUM_CONFIDENCE', 0.40);
 define('SNIPPET_SIZE', 120);
 // Define whether tags should be added automatically to a post, when entities are selected
 define('AUTO_TAG', true);
-?>
