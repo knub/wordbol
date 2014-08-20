@@ -25,6 +25,8 @@ function init($) {
 }
 
 function runStanbol($) {
+	if (typeof(POST_ID) === "undefined")
+		return;
 	window.setTimeout(function() {
 		$.ajax({
 			url: ajaxurl,
