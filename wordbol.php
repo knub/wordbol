@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Wordbol
 * Description: Integration of Apache Stanbol in WordPress.
-* Version: 0.1
+* Version: 1.1
 * Author: Stefan Bunk
 * License: MIT
 */
