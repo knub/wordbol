@@ -46,13 +46,15 @@ $enhancer = new Wordbol\StanbolEnhancer();
 add_action('admin_head', function () {
 	wp_enqueue_script('knubtip', '/wp-content/plugins/wordbol/js/jquery.knubtip.js', array('jquery'));
 	// yes, you have to do this duplicated code
-	wp_enqueue_script('google-maps', 'http://maps.googleapis.com/maps/api/js?key=' . GOOGLE_MAPS_API_KEY . '&sensor=false');
+	if (!is_null(GOOGLE_MAPS_API_KEY))
+		wp_enqueue_script('google-maps', 'http://maps.googleapis.com/maps/api/js?key=' . GOOGLE_MAPS_API_KEY . '&sensor=false');
 	wp_enqueue_script('wordbol-maps', '/wp-content/plugins/wordbol/js/maps.js', array('jquery'));
 	wp_enqueue_script('wordbol', '/wp-content/plugins/wordbol/js/admin-main.js', array('jquery'));
 	wp_enqueue_style('wordbol', '/wp-content/plugins/wordbol/css/main.css');
 });
 add_action('wp_enqueue_scripts', function() {
-	wp_enqueue_script('google-maps', 'http://maps.googleapis.com/maps/api/js?key=' . GOOGLE_MAPS_API_KEY . '&sensor=false');
+	if (!is_null(GOOGLE_MAPS_API_KEY))
+		wp_enqueue_script('google-maps', 'http://maps.googleapis.com/maps/api/js?key=' . GOOGLE_MAPS_API_KEY . '&sensor=false');
 	wp_enqueue_script('wordbol-maps', '/wp-content/plugins/wordbol/js/maps.js', array('jquery'));
 	wp_enqueue_script('wordbol-main', '/wp-content/plugins/wordbol/js/main.js', array('jquery'));
 	wp_enqueue_style('wordbol', '/wp-content/plugins/wordbol/css/main.css');
@@ -67,18 +69,20 @@ add_filter('the_content', function($content) {
 	$post = $GLOBALS['post'];
 	$id = $post->ID;
 	$json = str_replace("\"", "\\\"", get_post_meta($id, 'locations', true));
-	$content .= <<<MAP
-		<div id="map-canvas$map_counter" class="map-canvas"></div>
-		<script type="text/javascript">
-			if (typeof(allPlaces) === "undefined") {
-				allPlaces = [];
-			}
-			var json = "$json";
-			if (json.length !== 0)
-				allPlaces.push(JSON.parse(json));
-		</script>
+	if (!is_null(GOOGLE_MAPS_API_KEY)) {
+		$content .= <<<MAP
+			<div id="map-canvas$map_counter" class="map-canvas"></div>
+			<script type="text/javascript">
+				if (typeof(allPlaces) === "undefined") {
+					allPlaces = [];
+				}
+				var json = "$json";
+				if (json.length !== 0)
+					allPlaces.push(JSON.parse(json));
+			</script>
 MAP;
-	$map_counter += 1;
+		$map_counter += 1;
+	}
 	return $content;
 });
 

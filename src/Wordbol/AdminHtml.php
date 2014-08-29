@@ -170,11 +170,13 @@ MAPS;
 			}
 			$form_value += 1;
 		}
-		$content .= <<<END
-			<br style="clear: both" />
-			$placeContent
-		</div>
+		if (!is_null(GOOGLE_MAPS_API_KEY)) {
+			$content .= <<<END
+				<br style="clear: both" />
+				$placeContent
+			</div>
 END;
+		}
 		return $content;
 	}
 
