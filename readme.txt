@@ -3,7 +3,7 @@ Contributors: knub
 Tags: apache stanbol,stanbol,semantic lifting,semantic enhancement,semantic web,semantic,linking,wikipedia,entity,ner,named-entity-recognition
 Requires at least: 3.0
 Tested up to: 3.9
-Stable Tag: 1.0
+Stable Tag: 1.1
 License: MIT
 License URI: http://opensource.org/licenses/MIT
 
@@ -45,6 +45,9 @@ Feel free to contact me! I worked hard to make the current feature set stable, b
 1. This shows the selected entities to auto-link and auto-tag (North Carolina and Barack Obama), the infobx with detailed information about Barack Obama, and the auto-created map, which currently displays New York, India, and some other state in the USA. Also note the tags on the right side, which have already been added.
 
 == Changelog ==
+
+= 1.1 =
+Complete rename to Wordbol. No new features.
 
 = 1.0 =
 * First release

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/wordbol.iml" filepath="$PROJECT_DIR$/.idea/wordbol.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wordbol.iml" filepath="$PROJECT_DIR$/wordbol.iml" />
     </modules>
   </component>
 </project>
