@@ -9,6 +9,8 @@ use Wordbol\Models\EntityType;
 use Wordbol\Models\LanguageEnhancement;
 use Wordbol\Models\TextAnnotation;
 
+class StanbolNotAccessibleException extends \Exception { }
+
 /**
  * This class enhances a given text semantically using Apache Stanbol.
  */
@@ -138,7 +140,7 @@ class StanbolEnhancer {
 	private function handle_response($response) {
 		if (is_wp_error($response)) {
 			$error_message = $response->get_error_message();
-			throw new \Exception($error_message);
+			throw new StanbolNotAccessibleException($error_message);
 		} else {
 			$graph = new EasyRdf_Graph();
 			$graph->parse($response['body'], 'ntriples');

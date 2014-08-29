@@ -87,14 +87,22 @@ add_action('wp_ajax_run_stanbol', function() use ($enhancer) {
 	$post = get_post($id);
 
 	$post_content = $post->post_content;
-	$enhancement_result = $enhancer->enhance($post_content);
-
-	$json = get_post_meta($post->ID, 'locations', true);
-	if ($json === "")
-		$selected_locations = array();
-	else
-		$selected_locations = json_decode($json);
-	echo \Wordbol\AdminHtml::stanbolSelectionHtml($enhancement_result, $post_content, $selected_locations);
+	try {
+		$enhancement_result = $enhancer->enhance($post_content);
+		$json = get_post_meta($post->ID, 'locations', true);
+		if ($json === "")
+			$selected_locations = array();
+		else
+			$selected_locations = json_decode($json);
+		echo \Wordbol\AdminHtml::stanbolSelectionHtml($enhancement_result, $post_content, $selected_locations);
+	}
+	catch (\Wordbol\StanbolNotAccessibleException $e) {
+		echo '<h2>Error: Could not reach Stanbol. Please check, that you started Stanbol and it is reachable over the network.</h2>';
+		echo '<pre>';
+		echo $e->getMessage();
+		echo $e->getTraceAsString();
+		echo '</pre>';
+	}
 	wp_die();
 });
 
